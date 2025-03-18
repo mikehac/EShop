@@ -8,13 +8,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() user: UserRegisterDto) {
-    try {
-      return await this.authService.register(user);
-    } catch (error) {
-      return {
-        statusCode: error.response.statusCode,
-        message: error.response.message,
-      };
-    }
+    return await this.authService.register(user);
   }
+  @Post('login')
+  async login(@Body() user: UserRegisterDto) {}
 }
