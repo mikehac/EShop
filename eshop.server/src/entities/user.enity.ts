@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Address } from './address.entity';
 
 @Entity('users')
@@ -7,18 +13,15 @@ export class User {
   id: string;
 
   @Column()
-  name: string;
-
-  @Column()
-  email: string;
+  username: string;
 
   @Column()
   password: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   lastLogin?: Date;
 
   @Column()

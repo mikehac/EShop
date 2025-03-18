@@ -8,6 +8,8 @@ import { RedisModule, RedisService } from 'redissolution';
 import { CartService } from './cart/cart.service';
 import { User } from './entities/user.enity';
 import { Address } from './entities/address.entity';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { Address } from './entities/address.entity';
     }),
     RedisModule,
   ],
-  controllers: [AppController, CartController],
-  providers: [AppService, RedisService, CartService],
+  controllers: [AppController, CartController, AuthController],
+  providers: [AppService, RedisService, CartService, AuthService],
 })
 export class AppModule {}
