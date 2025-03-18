@@ -5,13 +5,14 @@ import {
   NotFoundException,
   Param,
   Post,
-  Query,
+  UseGuards,
 } from '@nestjs/common';
-import { CartService } from './cart.service';
 import { ShoppingCard } from 'src/dtos/shoppingCard';
-import { NotFoundError } from 'rxjs';
+import { AuthGuard } from 'src/Guards/AuthGuard';
+import { CartService } from './cart.service';
 
 @Controller('api/cart')
+@UseGuards(AuthGuard)
 export class CartController {
   constructor(private cartService: CartService) {}
 
