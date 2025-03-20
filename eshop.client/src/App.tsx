@@ -16,7 +16,7 @@ function App() {
   if (loading) return <div>Loading...</div>; // Prevents flickering
   return (
     <>
-      <Header />
+      <Header showMenu={isAuthenticated} />
       <Router>
         <Routes>
           {/* Public Routes */}
