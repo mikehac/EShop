@@ -8,11 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ShoppingCard } from 'src/dtos/shoppingCard';
-import { AuthGuard } from 'src/Guards/AuthGuard';
 import { CartService } from './cart.service';
+import { JwtAuthGuard } from 'src/Guards/JwtAuthGuard';
 
 @Controller('api/cart')
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 export class CartController {
   constructor(private cartService: CartService) {}
 
