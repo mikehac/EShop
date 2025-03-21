@@ -58,8 +58,16 @@ export function ProductsPage() {
   // const { isAuthenticated, loading } = useAuth();
   return (
     <>
-      <p>Products Page</p>
-      <input className="searchTxt" type="text" placeholder="Search..." />
+      <header className="searchBar">
+        <input className="searchTxt" type="text" placeholder="Search..." />
+      </header>
+      <h2>Today's deal</h2>
+      <section className="deal">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </section>
+      <h2>Shop by Categories</h2>
       <div className="categories">
         {categories.map((category) => (
           <CategoryItem key={category.id} category={category} />
