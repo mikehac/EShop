@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { CategoryItem } from "./categoryItem";
+import { fetchCategories } from "../utils/service";
 
 export function ProductsPage() {
   // const { isAuthenticated, loading } = useAuth();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    async function fetchCategories() {
-      return fetch(`${process.env.BASE_SERVER_URL}/category`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((resp) => resp.json());
-    }
-
     fetchCategories().then((result) => {
       setCategories(result);
     });

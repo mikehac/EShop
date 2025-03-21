@@ -36,3 +36,11 @@ export function getCart() {
   //   .then((data) => console.log(data))
   //   .catch((err) => console.error(err));
 }
+export async function fetchCategories() {
+  return fetch(`${process.env.BASE_SERVER_URL}/category`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((resp) => resp.json());
+}
