@@ -1,16 +1,40 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { CategoryItem } from "./categoryItem";
-import { fetchCategories } from "../utils/service";
-
+import { httpGet } from "../utils/service";
+import { Category } from "../types/category";
+import { Product } from "../types/product";
+import { ProductItem } from "./productItem";
 export function ProductsPage() {
   // const { isAuthenticated, loading } = useAuth();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [productDeals, setProductDeals] = useState<Product[]>([]);
   useEffect(() => {
-    fetchCategories().then((result) => {
+    httpGet("category").then((result) => {
       setCategories(result);
     });
   }, []);
+  useEffect(() => {
+    // const randomNumbers = getRandomIntegers(3, 1, 100);
+    const randomNumbers = [1, 15, 55];
+    Promise.all(
+      randomNumbers.map((randomId) => {
+        httpGet("product", String(randomId)).then((result) => {
+          setProductDeals((prev) => [...prev, result]);
+        });
+      })
+    );
+  }, []);
+  console.log(productDeals);
+
+  const getRandomIntegers = (count: number, min: number, max: number): number[] => {
+    const randomIntegers = [];
+    for (let i = 0; i < count; i++) {
+      const randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+      randomIntegers.push(randomInt);
+    }
+    return randomIntegers;
+  };
   return (
     <>
       <header className="searchBar">
@@ -18,9 +42,9 @@ export function ProductsPage() {
       </header>
       <h2>Today's deal</h2>
       <section className="deal">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div>{productDeals?.length > 0 && <ProductItem product={productDeals[0]} />}</div>
+        <div>{productDeals?.length > 0 && <ProductItem product={productDeals[1]} />}</div>
+        <div>{productDeals?.length > 0 && <ProductItem product={productDeals[2]} />}</div>
       </section>
       <h2>Shop by Categories</h2>
       <div className="categories">

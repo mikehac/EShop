@@ -36,8 +36,11 @@ export function getCart() {
   //   .then((data) => console.log(data))
   //   .catch((err) => console.error(err));
 }
-export async function fetchCategories() {
-  return fetch(`${process.env.BASE_SERVER_URL}/category`, {
+
+export function httpGet(endpoint: string, id: string = "") {
+  const url = id ? `${endpoint}/${id}` : endpoint; // Construct the URL dynamically
+
+  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -46,7 +46,7 @@ export default function Login() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <input type="email" placeholder="Username" {...register("username", { required: true })} />
         <input type="password" placeholder="Password" {...register("password")} />
-        <p>{errors.email && "Email is required"}</p>
+        <p>{errors.username && "username is required"}</p>
         <p>{errors.password && "Password is required"}</p>
         <button type="submit">Login</button>
       </form>
