@@ -31,10 +31,11 @@ export class CartService {
     }
 
     // Save the merged cart back to Redis
-    return this.redisService.set(
+    const redisResult = await this.redisService.set(
       shoppingCard.userId,
       JSON.stringify({ items: mergedItems }),
     );
+    return JSON.parse(redisResult);
   }
   async getCart(userId: string): Promise<any> {
     return JSON.parse(await this.redisService.get(userId));

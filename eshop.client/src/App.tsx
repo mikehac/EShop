@@ -2,7 +2,7 @@ import "./App.css";
 import "./styles/index.scss";
 import Login from "./components/login";
 import { Header } from "./components/header";
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ProductsPage } from "./components/productsPage";
 import { ProductDetailsPage } from "./components/productDetailsPage";
 import { useAuth } from "./hooks/useAuth";

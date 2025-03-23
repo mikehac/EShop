@@ -7,6 +7,7 @@ export function Header({ showMenu }: { showMenu: boolean }) {
   useEffect(() => {
     setLoggedIn(showMenu);
   }, [loggedIn]);
+
   const navigate = useNavigate();
   const handleLogoClick = () => {
     httpPost("auth/logout").then((res) => {

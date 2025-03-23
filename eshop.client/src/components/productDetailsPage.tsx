@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { httpGet, httpPost } from "../utils/service";
 import { Product } from "../types/product";
 import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
 
 export function ProductDetailsPage() {
+  const navigate = useNavigate();
+
   const { id } = useParams<{ id: string }>(); // Extract the 'id' parameter from the URL
-  // console.log(id);
+
   const [product, setProduct] = useState<Product>();
   const [quantity, setQuantity] = useState<number>(1); // State to store the quantity
   const [userId, setUserId] = useState<string | null>("");
@@ -36,6 +38,7 @@ export function ProductDetailsPage() {
     httpPost("cart", cartItem)
       .then((res) => {
         console.log(res);
+        navigate("/checkout");
       })
       .catch((err) => console.error(err));
     console.log(cartItem);
