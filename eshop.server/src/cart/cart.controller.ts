@@ -18,7 +18,7 @@ export class CartController {
 
   @Post()
   async setCart(@Body() shoppingCard: ShoppingCard) {
-    return this.cartService.setCart(shoppingCard);
+    return await this.cartService.setCart(shoppingCard);
   }
 
   @Get(':userId')

@@ -42,6 +42,20 @@ export function httpGet(endpoint: string, id: string = "") {
 
   return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
     method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((resp) => resp.json());
+}
+
+export function httpPost(endpoint: string, body: any = null) {
+  const url = endpoint; // Construct the URL dynamically
+
+  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+    method: "POST",
+    credentials: "include",
+    body: body ? JSON.stringify(body) : undefined,
     headers: {
       "Content-Type": "application/json",
     },
