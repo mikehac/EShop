@@ -39,9 +39,21 @@ export class AuthController {
     return res.json({ message: 'Login successful', status: 200 });
   }
 
+  @Post('logout')
+  logout(@Res() res) {
+    res.cookie('jwt', '', { expires: new Date(0) });
+    return res.send({ success: true });
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('check-auth')
   checkAuth(@Req() req) {
     return { message: 'Authenticated', user: req.user };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getMe(@Req() req) {
+    return { id: req.user.userId, username: req.user.username };
   }
 }

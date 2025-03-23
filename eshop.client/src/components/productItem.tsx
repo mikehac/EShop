@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
 import { Product } from "../types/product";
+import { currencyFormat } from "../utils/formatter";
 
 export function ProductItem({ product }: { product: Product }) {
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(product?.price);
-
   return (
     <section>
       <Link to={`/products/${product?.id}`}>
@@ -15,7 +11,7 @@ export function ProductItem({ product }: { product: Product }) {
           <img src={product?.imageUrl} />
         </div>
         <div className="productName">{product?.name}</div>
-        <div className="productPrice">{formattedPrice}</div>
+        <div className="productPrice">{currencyFormat(product?.price)}</div>
       </Link>
     </section>
   );
