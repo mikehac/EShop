@@ -9,7 +9,7 @@ export function ProductItem({ product }: { product: Product }) {
 
   return (
     <section>
-      <Link to={`/product/${product?.id}`}>
+      <Link to={`/products/${product?.id}`}>
         <input type="hidden" value={product?.id} />
         <div className="productImage">
           <img src={product?.imageUrl} />

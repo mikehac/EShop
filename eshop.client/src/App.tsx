@@ -17,21 +17,20 @@ function App() {
   return (
     <>
       <Header showMenu={isAuthenticated} />
-      <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Login />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:id" element={<ProductDetailsPage />} />
-          {/* Protected Routes */}
-          <Route path="/user" element={isAuthenticated ? <UserDetailsPage /> : <Navigate to="/login" />} />
-          <Route path="/checkout" element={isAuthenticated ? <CheckoutPage /> : <Navigate to="/login" />} />
-          <Route path="/cart" element={<ShoppingCartPage />} />
 
-          {/* Default Redirect */}
-          <Route path="*" element={<Navigate to="/products" />} />
-        </Routes>
-      </Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Login />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/:id" element={<ProductDetailsPage />} />
+        {/* Protected Routes */}
+        <Route path="/user" element={isAuthenticated ? <UserDetailsPage /> : <Navigate to="/login" />} />
+        <Route path="/checkout" element={isAuthenticated ? <CheckoutPage /> : <Navigate to="/login" />} />
+        <Route path="/cart" element={<ShoppingCartPage />} />
+
+        {/* Default Redirect */}
+        <Route path="*" element={<Navigate to="/products" />} />
+      </Routes>
     </>
   );
 }
