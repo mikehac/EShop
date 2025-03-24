@@ -49,6 +49,10 @@ export function CheckoutPage() {
     setDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
   };
 
+  const purchaseHandler = () => {
+    console.log("Will send the message to server side and than to the RabbitMQ about the purchase");
+  };
+
   const columns: GridColDef[] = [
     { field: "name", headerName: "Product Name", flex: 1 },
     {
@@ -140,7 +144,9 @@ export function CheckoutPage() {
           </div>
         </div>
         <div>
-          <button className="payNowBtn">Pay Now</button>
+          <button onClick={purchaseHandler} className="payNowBtn">
+            Pay Now
+          </button>
         </div>
       </div>
     </section>
