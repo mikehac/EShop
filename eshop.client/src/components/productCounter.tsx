@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export function ProductCounter({ onQuantityChange }: { onQuantityChange: (quantity: number) => void }) {
-  const [quantity, setQuantity] = useState<number>(1);
+export function ProductCounter({ onQuantityChange, value = 1 }: { onQuantityChange: (quantity: number) => void; value: number }) {
+  const [quantity, setQuantity] = useState<number>(value);
   const incrementQuantity = () => {
     setQuantity((prev) => {
       const newQuantity = prev + 1;

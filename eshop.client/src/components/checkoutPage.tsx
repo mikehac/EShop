@@ -1,27 +1,84 @@
 import { useEffect, useState } from "react";
 import { httpGet } from "../utils/service";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { currencyFormat } from "../utils/formatter";
+import { ProductCounter } from "./productCounter";
 
 export function CheckoutPage() {
   interface CartItem {
     id: string;
     name: string;
     quantity: number;
+    pricePerItem: number;
+    totalPrice: number;
   }
 
   const [details, setDetails] = useState<CartItem[]>([]);
+  const [subTotal, setSubTotal] = useState<number>(0);
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       httpGet("cart", userId).then((res) => {
-        console.log(res);
         setDetails(res);
+        calculateSubTotal(res);
       });
     }
   }, []);
+  useEffect(() => {
+    calculateSubTotal(details);
+  }, [details]);
+
+  const calculateSubTotal = (items: CartItem[]) => {
+    const subTotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
+    setSubTotal(subTotal);
+  };
+  const handleQuantityChange = (id: string, newQuantity: number) => {
+    setDetails((prevDetails) =>
+      prevDetails.map((item) => (item.id === id ? { ...item, quantity: newQuantity, totalPrice: item.pricePerItem * newQuantity } : item))
+    );
+  };
+
+  const handleRemoveRow = (id: string) => {
+    setDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
+  };
+
   const columns: GridColDef[] = [
     { field: "name", headerName: "Product Name", flex: 1 },
-    { field: "quantity", headerName: "Quantity", flex: 1 },
+    {
+      field: "quantity",
+      headerName: "Quantity",
+      flex: 1,
+      renderCell: (params) => (
+        <ProductCounter value={params.row.quantity} onQuantityChange={(newQuentity) => handleQuantityChange(params.row.id, newQuentity)} />
+      ),
+    },
+    {
+      field: "totalPrice",
+      headerName: "Total Price",
+      flex: 1,
+      valueFormatter: (value) => {
+        return currencyFormat(value);
+      },
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 0,
+      renderCell: (params) => (
+        <button
+          onClick={() => handleRemoveRow(params.row.id)}
+          style={{
+            backgroundColor: "#cdcdcd",
+            color: "white",
+            border: "none",
+            padding: "5px 10px",
+            cursor: "pointer",
+          }}
+        >
+          X
+        </button>
+      ),
+    },
   ];
   return (
     <section className="checkoutContainer">
@@ -41,7 +98,7 @@ export function CheckoutPage() {
           )}
           {details && details.length > 0 && (
             <div style={{ width: "100%" }}>
-              <DataGrid rows={details} columns={columns} autoHeight />
+              <DataGrid rows={details} columns={columns} />
             </div>
           )}
         </div>
@@ -53,7 +110,7 @@ export function CheckoutPage() {
             <div>
               <label>Subtotal</label>
             </div>
-            <div>10.00$</div>
+            <div>{currencyFormat(subTotal)}</div>
           </div>
           <div className="itemBlock">
             <div>

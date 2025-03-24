@@ -39,6 +39,9 @@ export class CartController {
       id: prod.productId,
       name: productInCart.find((x) => x.id == prod.productId).name,
       quantity: prod.quantity,
+      pricePerItem: productInCart.find((x) => x.id == prod.productId).price,
+      totalPrice:
+        prod.quantity * productInCart.find((x) => x.id == prod.productId).price,
     }));
     return (
       result ??
