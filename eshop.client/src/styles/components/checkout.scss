@@ -1,0 +1,43 @@
+.checkoutBlock {
+  width: 630px;
+  height: auto;
+  background-color: #fff;
+  // border: 1px solid;
+  margin: 25px 25px 25px 0;
+  header {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 0;
+  }
+
+  .payNowBtn {
+    width: 400px;
+    margin-top: 20px;
+    background-color: red;
+    color: #fff;
+  }
+}
+.checkoutContainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 1600px;
+}
+
+.summaryBlock {
+  display: flex;
+  // justify-content: space-between;
+  flex-direction: column;
+  // border: 1px solid;
+  padding: 0 15px;
+}
+.itemBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: bold;
+}
+.itemBlock:last-child {
+  border-top: 1px solid #b7b1b1;
+  font-size: 20px;
+}
