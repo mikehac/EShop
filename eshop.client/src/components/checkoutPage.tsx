@@ -25,14 +25,14 @@ export function CheckoutPage() {
   ];
   return (
     <section className="checkoutContainer">
-      <div>
-        <div className="checkoutBlock">
+      <div className="checkoutBlock">
+        <div>
           <header>Shipping address</header>
         </div>
-        <div className="checkoutBlock">
+        <div>
           <header>Payment Method</header>
         </div>
-        <div className="checkoutBlock">
+        <div>
           <header>Items details</header>
           {details && details.length === 0 && (
             <div style={{ height: "300px" }}>
@@ -40,8 +40,8 @@ export function CheckoutPage() {
             </div>
           )}
           {details && details.length > 0 && (
-            <div>
-              <DataGrid rows={details} columns={columns} />
+            <div style={{ width: "100%" }}>
+              <DataGrid rows={details} columns={columns} autoHeight />
             </div>
           )}
         </div>

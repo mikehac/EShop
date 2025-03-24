@@ -29,7 +29,7 @@ export function Header({ showMenu }: { showMenu: boolean }) {
       <nav>
         <ul className="nav-links" style={{ display: loggedIn ? "flex" : "none" }}>
           <li>
-            <a href="#">Home</a>
+            <a href="/">Home</a>
           </li>
           <li>
             <a href="/products">Products</a>

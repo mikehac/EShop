@@ -1,26 +1,34 @@
 .checkoutBlock {
-  width: 630px;
+  // width: 630px;
+  flex: 1;
   height: auto;
   background-color: #fff;
   // border: 1px solid;
   margin: 25px 25px 25px 0;
+
   header {
     font-size: 20px;
     font-weight: bold;
     padding: 20px 0;
   }
-
-  .payNowBtn {
-    width: 400px;
-    margin-top: 20px;
-    background-color: red;
-    color: #fff;
-  }
+}
+.checkoutBlock:first-child {
+  flex: 2 0 65.66%;
+}
+.checkoutBlock:last-child {
+  flex: 1;
+}
+.payNowBtn {
+  width: 400px;
+  margin-top: 20px;
+  background-color: red;
+  color: #fff;
 }
 .checkoutContainer {
   display: flex;
   justify-content: flex-start;
-  width: 1600px;
+  gap: 12px;
+  // width: 1600px;
 }
 
 .summaryBlock {
