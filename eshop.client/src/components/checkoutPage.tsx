@@ -15,6 +15,9 @@ export function CheckoutPage() {
 
   const [details, setDetails] = useState<CartItem[]>([]);
   const [subTotal, setSubTotal] = useState<number>(0);
+  //TODO: For now this is hardcoded, will be changed soon!!!!
+  const [shipping, setShipping] = useState<number>(0.15);
+  const [total, setTotal] = useState<number>(0);
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
@@ -27,6 +30,10 @@ export function CheckoutPage() {
   useEffect(() => {
     calculateSubTotal(details);
   }, [details]);
+
+  useEffect(() => {
+    setTotal(subTotal + shipping);
+  }, [subTotal]);
 
   const calculateSubTotal = (items: CartItem[]) => {
     const subTotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
@@ -129,7 +136,7 @@ export function CheckoutPage() {
             <div>
               <label>Total</label>
             </div>
-            <div>10.15$</div>
+            <div>{currencyFormat(total)}$</div>
           </div>
         </div>
         <div>
