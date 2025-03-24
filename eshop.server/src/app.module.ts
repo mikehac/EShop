@@ -9,10 +9,18 @@ import { CartService } from './cart/cart.service';
 import { DatabaseModule } from './database/database.module';
 import { ProductModule } from './product/product.module';
 import { ProductCategoryModule } from './product-category/product-category.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [RedisModule, AuthModule, DatabaseModule, ProductModule, ProductCategoryModule],
-  controllers: [AppController, CartController],
-  providers: [AppService, RedisService, CartService],
+  imports: [
+    RedisModule,
+    AuthModule,
+    DatabaseModule,
+    ProductModule,
+    ProductCategoryModule,
+    CartModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService, RedisService],
 })
 export class AppModule {}
