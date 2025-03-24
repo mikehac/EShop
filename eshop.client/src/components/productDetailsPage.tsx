@@ -22,6 +22,7 @@ export function ProductDetailsPage() {
   useEffect(() => {
     httpGet("auth/me").then((data) => {
       setUserId(data.id);
+      localStorage.setItem("userId", data.id);
     });
   }, []);
 
@@ -37,7 +38,7 @@ export function ProductDetailsPage() {
     };
     httpPost("cart", cartItem)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         navigate("/checkout");
       })
       .catch((err) => console.error(err));
