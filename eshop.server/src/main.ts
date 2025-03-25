@@ -13,7 +13,7 @@ async function bootstrap() {
   app.use(cookieParser()); // Enable cookie parsing
   app.enableCors({
     // origin: '*',
-    origin: 'http://localhost:5173',
+    origin: process.env.CORS_ORIGIN, // 'http://localhost:5173',
     credentials: true,
   });
   app.useGlobalFilters(new appExceptionsFilter());

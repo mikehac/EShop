@@ -4,12 +4,11 @@ import { AppController } from './app.controller';
 import { RedisModule, RedisService } from 'redissolution';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { CartController } from './cart/cart.controller';
-import { CartService } from './cart/cart.service';
-import { DatabaseModule } from './database/database.module';
-import { ProductModule } from './product/product.module';
-import { ProductCategoryModule } from './product-category/product-category.module';
 import { CartModule } from './cart/cart.module';
+import { DatabaseModule } from './database/database.module';
+import { MqmanagerModule } from './mqmanager/mqmanager.module';
+import { ProductCategoryModule } from './product-category/product-category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -19,6 +18,7 @@ import { CartModule } from './cart/cart.module';
     ProductModule,
     ProductCategoryModule,
     CartModule,
+    MqmanagerModule,
   ],
   controllers: [AppController],
   providers: [AppService, RedisService],

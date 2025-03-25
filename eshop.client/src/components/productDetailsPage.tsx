@@ -69,7 +69,7 @@ export function ProductDetailsPage() {
             <div>
               <label>Quentity:</label>
               <div>
-                <ProductCounter onQuantityChange={handleQuantityChange} />
+                <ProductCounter onQuantityChange={handleQuantityChange} value={1} />
               </div>
             </div>
             <button className="buyBtn">Buy</button>
