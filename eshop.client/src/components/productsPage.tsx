@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
 import { CategoryItem } from "./categoryItem";
 import { httpGet } from "../utils/service";
 import { Category } from "../types/category";
 import { Product } from "../types/product";
 import { ProductItem } from "./productItem";
 export function ProductsPage() {
-  // const { isAuthenticated, loading } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
   const [productDeals, setProductDeals] = useState<Product[]>([]);
   useEffect(() => {
@@ -14,6 +12,7 @@ export function ProductsPage() {
       setCategories(result);
     });
   }, []);
+
   useEffect(() => {
     // const randomNumbers = getRandomIntegers(3, 1, 100);
     const randomNumbers = [1, 15, 55];
@@ -25,7 +24,6 @@ export function ProductsPage() {
       })
     );
   }, []);
-  console.log(productDeals);
 
   const getRandomIntegers = (count: number, min: number, max: number): number[] => {
     const randomIntegers = [];

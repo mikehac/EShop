@@ -3,6 +3,7 @@ import { httpGet, httpPost } from "../utils/service";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
+import { useUserId } from "../hooks/useUserId";
 
 export function CheckoutPage() {
   interface CartItem {
@@ -18,9 +19,9 @@ export function CheckoutPage() {
   //TODO: For now this is hardcoded, will be changed soon!!!!
   const [shipping, setShipping] = useState<number>(0.15);
   const [total, setTotal] = useState<number>(0);
+  const userId = useUserId();
   useEffect(() => {
     const fetchCartDetails = async () => {
-      const userId = localStorage.getItem("userId");
       if (userId) {
         const res = await httpGet("cart", userId);
         setDetails(res);
@@ -52,8 +53,6 @@ export function CheckoutPage() {
   };
 
   const purchaseHandler = (total: number, subtotal: number, shipping: number) => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) return;
     const messageToSend = {
       userId,
       shipping,

@@ -1,0 +1,30 @@
+.mainUserDetails {
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: space-around;
+  form {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+    div {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    label {
+      font-size: 20px;
+    }
+    input {
+      width: 300px;
+    }
+    .submit {
+      // font-size: 20px;
+
+      width: 92%;
+      background-color: blue;
+      color: white;
+    }
+  }
+}

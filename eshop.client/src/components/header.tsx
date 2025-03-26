@@ -37,6 +37,9 @@ export function Header({ showMenu }: { showMenu: boolean }) {
           <li>
             <a href="/checkout">Cart</a>
           </li>
+          <li>
+            <a href="/user">My details</a>
+          </li>
         </ul>
       </nav>
     </header>

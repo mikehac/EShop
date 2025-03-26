@@ -61,3 +61,16 @@ export function httpPost(endpoint: string, body: any = null) {
     },
   }).then((resp) => resp.json());
 }
+
+export function httpPut(endpoint: string, body: any = null) {
+  const url = endpoint; // Construct the URL dynamically
+
+  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+    method: "PUT",
+    credentials: "include",
+    body: body ? JSON.stringify(body) : undefined,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((resp) => resp.json());
+}
