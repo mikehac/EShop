@@ -2,7 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
@@ -27,6 +27,6 @@ export class User {
   @Column()
   role: string = 'user';
 
-  @OneToMany(() => Address, (address) => address.user)
-  addresses: Address[];
+  @OneToOne(() => Address, (address) => address.user)
+  address: Address;
 }

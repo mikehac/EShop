@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import { MqmanagerModule } from './mqmanager/mqmanager.module';
 import { ProductCategoryModule } from './product-category/product-category.module';
 import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ProductModule } from './product/product.module';
     ProductCategoryModule,
     CartModule,
     MqmanagerModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, RedisService],
