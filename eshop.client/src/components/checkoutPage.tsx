@@ -4,6 +4,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
 import { useUserId } from "../hooks/useUserId";
+import { Address } from "../types/address";
 
 export function CheckoutPage() {
   interface CartItem {
@@ -14,49 +15,62 @@ export function CheckoutPage() {
     totalPrice: number;
   }
 
-  const [details, setDetails] = useState<CartItem[]>([]);
+  const [cartDetails, setCartDetails] = useState<CartItem[]>([]);
   const [subTotal, setSubTotal] = useState<number>(0);
-  //TODO: For now this is hardcoded, will be changed soon!!!!
-  const [shipping, setShipping] = useState<number>(0.15);
+  const [shipping, setShipping] = useState<number>(0.15); // Hardcoded for now
   const [total, setTotal] = useState<number>(0);
+  const [address, setAddress] = useState<Address>({
+    street: "",
+    city: "",
+    zip: "",
+    country: "",
+  });
   const userId = useUserId();
+
   useEffect(() => {
     const fetchCartDetails = async () => {
       if (userId) {
         const res = await httpGet("cart", userId);
-        setDetails(res);
+        setCartDetails(res);
+      }
+    };
+
+    const fetchAddress = async () => {
+      if (userId) {
+        const res = await httpGet(`user/${userId}`);
+        setAddress(res.address);
       }
     };
 
     fetchCartDetails();
-  }, []);
+    fetchAddress();
+  }, [userId]);
 
   useEffect(() => {
-    // Recalculate subtotal and total whenever `details` or `shipping` changes
     const calculateSubTotal = (items: CartItem[]) => {
       return items.reduce((sum, item) => sum + item.totalPrice, 0);
     };
 
-    const newSubTotal = calculateSubTotal(details);
+    const newSubTotal = calculateSubTotal(cartDetails);
     setSubTotal(newSubTotal);
     setTotal(newSubTotal + shipping);
-  }, [details, shipping]);
+  }, [cartDetails, shipping]);
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
-    setDetails((prevDetails) =>
+    setCartDetails((prevDetails) =>
       prevDetails.map((item) => (item.id === id ? { ...item, quantity: newQuantity, totalPrice: item.pricePerItem * newQuantity } : item))
     );
   };
 
   const handleRemoveRow = (id: string) => {
-    setDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
+    setCartDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
   };
 
   const purchaseHandler = (total: number, subtotal: number, shipping: number) => {
     const messageToSend = {
       userId,
       shipping,
-      subTotal,
+      subTotal: subtotal,
       total,
     };
     httpPost("mqmanager/sendPurchuse", messageToSend).then((res) => console.log(res));
@@ -69,7 +83,7 @@ export function CheckoutPage() {
       headerName: "Quantity",
       flex: 1,
       renderCell: (params) => (
-        <ProductCounter value={params.row.quantity} onQuantityChange={(newQuentity) => handleQuantityChange(params.row.id, newQuentity)} />
+        <ProductCounter value={params.row.quantity} onQuantityChange={(newQuantity) => handleQuantityChange(params.row.id, newQuantity)} />
       ),
     },
     {
@@ -100,25 +114,44 @@ export function CheckoutPage() {
       ),
     },
   ];
+
   return (
     <section className="checkoutContainer">
       <div className="checkoutBlock">
         <div>
           <header>Shipping address</header>
+          <div className="shippingBlock">
+            <div>
+              <label>Street:</label>
+              <span>{address.street}</span>
+            </div>
+            <div>
+              <label>City:</label>
+              <span>{address.city}</span>
+            </div>
+            <div>
+              <label>Zip Code:</label>
+              <span>{address.zip}</span>
+            </div>
+            <div>
+              <label>Country:</label>
+              <span>{address.country}</span>
+            </div>
+          </div>
         </div>
         <div>
           <header>Payment Method</header>
         </div>
         <div>
           <header>Items details</header>
-          {details && details.length === 0 && (
+          {cartDetails && cartDetails.length === 0 && (
             <div style={{ height: "300px" }}>
               <span>No items for current user</span>
             </div>
           )}
-          {details && details.length > 0 && (
+          {cartDetails && cartDetails.length > 0 && (
             <div style={{ width: "100%" }}>
-              <DataGrid rows={details} columns={columns} />
+              <DataGrid rows={cartDetails} columns={columns} />
             </div>
           )}
         </div>
@@ -143,14 +176,14 @@ export function CheckoutPage() {
               <div>
                 <label>Shipping fee</label>
               </div>
-              <div>0.15$</div>
+              <div>{currencyFormat(shipping)}</div>
             </div>
             <hr />
             <div className="itemBlock">
               <div>
                 <label>Total</label>
               </div>
-              <div>{currencyFormat(total)}$</div>
+              <div>{currencyFormat(total)}</div>
             </div>
           </div>
         </div>

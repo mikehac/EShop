@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { httpGet, httpPut } from "../utils/service";
 import { useUserId } from "../hooks/useUserId";
+import { Address } from "../types/address";
 
 export function UserDetailsPage() {
   const userId = useUserId();
   const [userDetails, setUserDetails] = useState<any>(null);
-  const [address, setAddress] = useState({
+  const [address, setAddress] = useState<Address>({
     street: "",
     city: "",
     zip: "",

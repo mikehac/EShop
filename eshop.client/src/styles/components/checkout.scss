@@ -54,3 +54,22 @@
   border-top: 1px solid #b7b1b1;
   font-size: 20px;
 }
+
+.shippingBlock {
+  display: flex;
+  flex-direction: column;
+  div {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 15px;
+    // border: 1px solid;
+
+    label {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    span {
+      font-size: 20px;
+    }
+  }
+}
