@@ -18,6 +18,6 @@ async function bootstrap() {
   });
   app.useGlobalFilters(new appExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  await app.listen(process.env.APP_HOST || 3000);
 }
 bootstrap();
