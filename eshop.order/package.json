@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prestart": "ts-node src/createDatabase.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -24,12 +25,18 @@
     "@nestjs/core": "^11.0.11",
     "@nestjs/microservices": "^11.0.12",
     "@nestjs/platform-express": "^11.0.11",
+    "@nestjs/typeorm": "^11.0.0",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.5",
     "dotenv": "^16.4.7",
     "mqmanager-nestjs": "^1.0.0",
+    "pg": "^8.14.1",
+    "pgtools": "^1.0.1",
+    "postgres": "^3.4.5",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+    "rxjs": "^7.8.2",
+    "typeorm": "^0.3.21",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.5",
@@ -39,6 +46,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.10",
     "@types/supertest": "^6.0.2",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "eslint": "^9.22.0",
