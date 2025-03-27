@@ -66,9 +66,11 @@ export function CheckoutPage() {
     setCartDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
   };
 
-  const purchaseHandler = (total: number, subtotal: number, shipping: number) => {
+  const purchaseHandler = (total: number, subtotal: number, shipping: number, address: Address, cartDetails: CartItem[]) => {
     const messageToSend = {
       userId,
+      address,
+      items: cartDetails,
       shipping,
       subTotal: subtotal,
       total,
@@ -188,7 +190,7 @@ export function CheckoutPage() {
           </div>
         </div>
         <div>
-          <button onClick={() => purchaseHandler(total, subTotal, shipping)} className="payNowBtn">
+          <button onClick={() => purchaseHandler(total, subTotal, shipping, address, cartDetails)} className="payNowBtn">
             Pay Now
           </button>
         </div>
