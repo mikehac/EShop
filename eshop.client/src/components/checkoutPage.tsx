@@ -11,7 +11,7 @@ export function CheckoutPage() {
     id: string;
     name: string;
     quantity: number;
-    pricePerItem: number;
+    price: number;
     totalPrice: number;
   }
 
@@ -58,7 +58,7 @@ export function CheckoutPage() {
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     setCartDetails((prevDetails) =>
-      prevDetails.map((item) => (item.id === id ? { ...item, quantity: newQuantity, totalPrice: item.pricePerItem * newQuantity } : item))
+      prevDetails.map((item) => (item.id === id ? { ...item, quantity: newQuantity, totalPrice: item.price * newQuantity } : item))
     );
   };
 
