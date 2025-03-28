@@ -45,7 +45,7 @@ export class Order {
     cascade: true,
     eager: true,
   })
-  @JoinColumn()
+  @OneToOne(() => Address, (address) => address.order, { cascade: true })
   address: Address;
 
   @OneToMany(() => OrderStatusHistory, (history) => history.order, {

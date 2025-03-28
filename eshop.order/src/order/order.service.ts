@@ -4,7 +4,7 @@ import { Address } from 'src/entities/address.entity';
 import { OrderItem } from 'src/entities/order-item.entity';
 import { Order } from 'src/entities/order.entity';
 import { Message } from 'src/interfaces/message';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid'; // Import the UUID function
 
 @Injectable()
@@ -13,23 +13,54 @@ export class OrderService {
     @InjectRepository(Order) private orderRepo: Repository<Order>,
     @InjectRepository(OrderItem) private orderItemRepo: Repository<OrderItem>,
     @InjectRepository(Address) private addressRepo: Repository<Address>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async SaveNewOrder(message: Message) {
-    // console.log(message);
-    const order: Order = {
-      userId: message.userId,
-      shipping: message.shipping,
-      id: uuidv4(),
-      subtotal: message.subTotal,
-      total: message.total,
-      status: '',
-      createdAt: new Date(),
-      updatedAt: undefined,
-      items: undefined,
-      address: undefined,
-      statusHistory: [],
-    };
-    await this.orderRepo.save(order);
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const address: Address = queryRunner.manager.create(
+        Address,
+        message.address,
+      );
+      await queryRunner.manager.save(Address, address);
+      // Create the order
+      const order: Order = {
+        id: uuidv4(),
+        userId: message.userId,
+        shipping: message.shipping,
+        subtotal: message.subTotal,
+        total: message.total,
+        status: 'Pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        address: address,
+        items: undefined,
+        statusHistory: [],
+      };
+      await queryRunner.manager.save(Order, order);
+
+      // Save the order items
+      const items: OrderItem[] = message.items.map((item) => ({
+        id: uuidv4(),
+        productId: item.id,
+        order: order, // Associate the order
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      }));
+      await queryRunner.manager.save(OrderItem, items);
+
+      // Commit the transaction
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      console.error('Error saving new order:', error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
