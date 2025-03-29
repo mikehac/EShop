@@ -204,3 +204,5 @@ web/.vscode/
 
 # React Native Metro
 .metro/
+
+**/.env.prod
