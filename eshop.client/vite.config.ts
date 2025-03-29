@@ -9,5 +9,12 @@ export default defineConfig(({ command, mode }) => {
       "process.env": env,
     },
     plugins: [react()],
+    build: {
+      outDir: "dist", // Output directory for the build
+      assetsDir: "assets", // Directory for static assets within the output folder
+      rollupOptions: {
+        input: "./index.html", // Entry point for the application
+      },
+    },
   };
 });
