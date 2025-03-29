@@ -1,0 +1,32 @@
+services:
+  eshop.server:
+    image: eshop.server
+    build:
+      context: ./eshop.server
+      dockerfile: ./dockerfile
+    env_file:
+      - ./eshop.server/.env.prod
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    networks:
+      - eshopnetwork
+    restart: always
+  eshop.client:
+    build:
+      context: ./eshop.client
+      dockerfile: ./dockerfile
+    env_file:
+      - ./eshop.client/.env
+    ports:
+      - "80:80"
+    expose:
+      - 80
+    networks:
+      - eshopnetwork
+    depends_on:
+      - eshop.server
+networks:
+  eshopnetwork:
+    driver: bridge
