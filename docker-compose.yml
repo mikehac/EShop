@@ -10,6 +10,8 @@ services:
       - "3000:3000"
     expose:
       - 3000
+    depends_on:
+      - eshop.broker
     networks:
       - eshopnetwork
     restart: always
@@ -27,6 +29,25 @@ services:
       - eshopnetwork
     depends_on:
       - eshop.server
+  eshop.order:
+    build:
+      context: ./eshop.order
+      dockerfile: ./dockerfile
+    env_file:
+      - ./eshop.order/.env.prod
+    depends_on:
+      - eshop.broker
+    networks:
+      - eshopnetwork
+  eshop.broker:
+    container_name: rabbitmq
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_NODE_PORT: 5672
+    networks:
+      - eshopnetwork
 networks:
   eshopnetwork:
     driver: bridge
