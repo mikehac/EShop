@@ -206,3 +206,6 @@ web/.vscode/
 .metro/
 
 **/.env.prod
+
+# Databases credationals
+eshop.db/

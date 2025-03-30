@@ -60,6 +60,45 @@ services:
       - 6379
     networks:
       - eshopnetwork
+  eshop.db:
+    container_name: eshop.db
+    image: postgres
+    networks:
+      - eshopnetwork
+    env_file:
+      - ./eshop.db/.env # Path to the environment file
+    ports:
+      - "54132:5432"
+    expose:
+      - 54132
+    volumes:
+      - data-1:/var/lib/postgresql/data
+  eshop.order.db:
+    container_name: eshop.order.db
+    image: postgres
+    networks:
+      - eshopnetwork
+    env_file:
+      - ./eshop.db/.env.order # Path to the environment file
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    volumes:
+      - data-2:/var/lib/postgresql/data
+volumes:
+  data-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${POSTGRES_VOLUME_PATH_1}
+      o: bind
+  data-2:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${POSTGRES_VOLUME_PATH_2}
+      o: bind
 networks:
   eshopnetwork:
     driver: bridge
