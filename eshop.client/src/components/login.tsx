@@ -50,6 +50,10 @@ export default function Login() {
         <p>{errors.password && "Password is required"}</p>
         <button type="submit">Login</button>
       </form>
+      <div className="actions">
+        <a href="#">Forgot Password</a>
+        <a href="/register">Register</a>
+      </div>
     </section>
   );
 }

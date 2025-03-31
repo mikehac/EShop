@@ -1,0 +1,21 @@
+#register {
+  width: 1200px;
+  margin: 50px auto;
+  background-color: #f0f0f0;
+  form {
+    width: 600px;
+    margin: 50px auto;
+    div {
+      display: flex;
+      justify-content: space-between;
+      input {
+        padding: 10px;
+        border-radius: 5px;
+        width: 300px;
+      }
+      // button {
+      //   width: 100%;
+      // }
+    }
+  }
+}

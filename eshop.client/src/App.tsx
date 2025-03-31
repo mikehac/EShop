@@ -9,6 +9,7 @@ import { useAuth } from "./hooks/useAuth";
 import { UserDetailsPage } from "./components/userDetailsPage";
 import { CheckoutPage } from "./components/checkoutPage";
 import { ShoppingCartPage } from "./components/shoppingCartPage";
+import { Register } from "./components/register";
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailsPage />} />
         {/* Protected Routes */}

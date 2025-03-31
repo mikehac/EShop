@@ -28,3 +28,14 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+
+  a {
+    display: inline-block;
+    margin-bottom: 0px;
+  }
+}
