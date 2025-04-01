@@ -7,8 +7,16 @@ export function Register() {
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
   const confirmPassword = useRef<HTMLInputElement>(null);
-  // State to manage success message visibility
   const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  function validationEvent(event: any) {
+    if (event.target.value !== password.current?.value) {
+      setErrorMessage("Passwords do not match");
+    } else {
+      setErrorMessage("");
+    }
+  }
 
   function handleRegister(event: React.FormEvent) {
     event.preventDefault();
@@ -28,28 +36,31 @@ export function Register() {
       });
   }
   return (
-    <>
-      {!successMessage && (
-        <section id="register">
+    <section id="register">
+      {!successMessage ? (
+        <div className="form-container">
           <h2>Register</h2>
           <form onSubmit={handleRegister}>
             <div>
-              <input type="text" placeholder="Username" ref={username} autoComplete="off" />
+              <input type="email" placeholder="Username" ref={username} autoComplete="off" required />
             </div>
             <div>
-              <input type="password" placeholder="Password" ref={password} autoComplete="new-password" />
+              <input type="password" placeholder="Password" ref={password} autoComplete="new-password" required />
             </div>
             <div>
-              <input type="password" placeholder="Confirm Password" ref={confirmPassword} autoComplete="off" />
+              <input type="password" placeholder="Confirm Password" ref={confirmPassword} autoComplete="off" onBlur={validationEvent} required />
             </div>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
             <div>
               <button type="submit">Register</button>
             </div>
           </form>
-        </section>
+        </div>
+      ) : (
+        <div className="form-container success-message">
+          <h2>The registration completed successfully</h2>
+        </div>
       )}
-      {/* Success message */}
-      {successMessage && <div className="success-message">The registration completed successfully</div>}
-    </>
+    </section>
   );
 }
