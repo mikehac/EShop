@@ -17,6 +17,6 @@ export class Product {
   @Column()
   categoryId: number;
 
-  // @ManyToOne(() => ProductCategory, (category) => category.products)
-  // category: ProductCategory;
+  @ManyToOne(() => ProductCategory, (category) => category.products)
+  category: ProductCategory;
 }

@@ -16,7 +16,7 @@ export class ProductService {
   }
 
   async getById(id: number) {
-    return await this.repo.findOne({ where: { id } });
+    return await this.repo.findOne({ where: { id }, relations: ['category'] });
   }
 
   async getByIds(ids: number[]) {

@@ -10,6 +10,6 @@ export class ProductCategory {
   name: string;
   @Column()
   imageUrl: string;
-  // @OneToMany(() => Product, (product) => product.category)
-  // products: Product[];
+  @OneToMany(() => Product, (product) => product.category)
+  products: Product[];
 }
