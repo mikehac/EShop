@@ -19,14 +19,7 @@ export function Header({ showMenu }: { showMenu: boolean }) {
   };
   return (
     <header className="header">
-      {loggedIn && (
-        <Link to="/home" onClick={handleLogoClick}>
-          LogOut
-        </Link>
-      )}
-      <img src={logo} alt="eShop Logo" className="logo" />
-      <h2>My e-Shop</h2>
-      <nav>
+      <nav className="menuNav">
         <ul className="nav-links" style={{ display: loggedIn ? "flex" : "none" }}>
           <li>
             <a href="/">Home</a>
@@ -42,6 +35,12 @@ export function Header({ showMenu }: { showMenu: boolean }) {
           </li>
         </ul>
       </nav>
+      {/* <img src={logo} alt="eShop Logo" className="logo" /> */}
+      {loggedIn && (
+        <Link className="logout-link" to="/home" onClick={handleLogoClick}>
+          LogOut
+        </Link>
+      )}
     </header>
   );
 }
