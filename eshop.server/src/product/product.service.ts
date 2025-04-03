@@ -22,4 +22,20 @@ export class ProductService {
   async getByIds(ids: number[]) {
     return await this.repo.find({ where: { id: In(ids) } });
   }
+
+  search(searchTerm: string) {
+    return this.repo
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .where('LOWER(product.name) LIKE :searchTerm', {
+        searchTerm: `%${searchTerm.toLowerCase()}%`,
+      })
+      .orWhere('LOWER(product.description) LIKE :searchTerm', {
+        searchTerm: `%${searchTerm.toLowerCase()}%`,
+      })
+      .orWhere('LOWER(category.name) LIKE :searchTerm', {
+        searchTerm: `%${searchTerm.toLowerCase()}%`,
+      })
+      .getMany();
+  }
 }

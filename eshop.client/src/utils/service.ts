@@ -37,8 +37,8 @@ export function getCart() {
   //   .catch((err) => console.error(err));
 }
 
-export function httpGet(endpoint: string, id: string = "") {
-  const url = id ? `${endpoint}/${id}` : endpoint; // Construct the URL dynamically
+export function httpGet(endpoint: string, id: string = "", searchTerm: string = "") {
+  const url = id ? `${endpoint}/${id}` : searchTerm ? `${endpoint}/?searchTerm=${searchTerm}` : endpoint;
 
   return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
     method: "GET",

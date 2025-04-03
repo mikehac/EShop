@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 
 @Controller('api/product')
@@ -6,7 +6,10 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Get()
-  async getAll() {
+  async getAll(@Query('searchTerm') searchTerm?: string) {
+    if (searchTerm) {
+      return await this.productService.search(searchTerm);
+    }
     return await this.productService.getAllProducts();
   }
 
