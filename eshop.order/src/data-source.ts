@@ -6,7 +6,7 @@ import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { OrderStatusHistory } from './entities/order-status-history.entity';
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env.prod' }); // Load environment variables from .env.prod file
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

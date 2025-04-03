@@ -38,7 +38,9 @@ export function CheckoutPage() {
     const fetchAddress = async () => {
       if (userId) {
         const res = await httpGet(`user/${userId}`);
-        setAddress(res.address);
+        if (res?.address) {
+          setAddress(res.address);
+        }
       }
     };
 
