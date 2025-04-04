@@ -12,7 +12,10 @@ export class ProductService {
   }
 
   async getByCategoryId(categoryId: number) {
-    return await this.repo.find({ where: { categoryId } });
+    return await this.repo.find({
+      where: { categoryId },
+      relations: ['category'],
+    });
   }
 
   async getById(id: number) {

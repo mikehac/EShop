@@ -24,6 +24,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/category/:id" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailsPage />} />
         {/* Protected Routes */}
         <Route path="/user" element={isAuthenticated ? <UserDetailsPage /> : <Navigate to="/login" />} />
