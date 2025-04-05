@@ -21,6 +21,15 @@ import { OrderService } from './order/order.service';
       database: process.env.DB_NAME || 'eshop.orders',
       entities: [Address, Order, OrderItem, OrderStatusHistory],
       synchronize: true,
+      ssl: process.env.DB_SSL === 'true',
+      extra:
+        process.env.DB_SSL === 'true'
+          ? {
+              ssl: {
+                rejectUnauthorized: false,
+              },
+            }
+          : {},
     }),
   ],
   controllers: [],

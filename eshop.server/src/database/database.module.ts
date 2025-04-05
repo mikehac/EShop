@@ -16,6 +16,15 @@ import { User } from 'src/entities/user.enity';
       database: process.env.DB_NAME || 'eshop',
       entities: [User, Address, ProductCategory, Product],
       synchronize: true,
+      ssl: process.env.DB_SSL === 'true',
+      extra:
+        process.env.DB_SSL === 'true'
+          ? {
+              ssl: {
+                rejectUnauthorized: false,
+              },
+            }
+          : {},
     }),
   ],
 })
