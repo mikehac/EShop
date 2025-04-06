@@ -35,8 +35,9 @@ export class CartService {
       shoppingCard.userId,
       JSON.stringify({ items: mergedItems }),
     );
-    return JSON.parse(redisResult);
+    return JSON.parse(JSON.stringify({ result: redisResult }));
   }
+
   async getCart(userId: string): Promise<any> {
     return JSON.parse(await this.redisService.get(userId));
   }

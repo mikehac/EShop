@@ -25,12 +25,19 @@ export function CheckoutPage() {
     zip: "",
     country: "",
   });
+  const [gridInteracted, setGridInteracted] = useState(false); // New state to track grid interaction
   const userId = useUserId();
 
   useEffect(() => {
     const fetchCartDetails = async () => {
       if (userId) {
         const res = await httpGet("cart", userId);
+        if (res.statusCode === 404) {
+          setCartDetails([]);
+          setShipping(0);
+          setTotal(0);
+          return;
+        }
         setCartDetails(res);
       }
     };
@@ -56,15 +63,29 @@ export function CheckoutPage() {
     const newSubTotal = calculateSubTotal(cartDetails);
     setSubTotal(newSubTotal);
     setTotal(newSubTotal + shipping);
-  }, [cartDetails, shipping]);
+    console.log("cartDetails", cartDetails);
+    if (gridInteracted) {
+      //update the Redis
+      const shoppingCard = {
+        userId: userId,
+        items: cartDetails.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })),
+      };
+      httpPost("cart", shoppingCard).then((res) => console.log(res));
+    }
+  }, [cartDetails, shipping, gridInteracted]);
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
+    setGridInteracted(true);
     setCartDetails((prevDetails) =>
       prevDetails.map((item) => (item.id === id ? { ...item, quantity: newQuantity, totalPrice: item.price * newQuantity } : item))
     );
   };
 
   const handleRemoveRow = (id: string) => {
+    setGridInteracted(true);
     setCartDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
   };
 
@@ -150,7 +171,7 @@ export function CheckoutPage() {
           <header>Items details</header>
           {cartDetails && cartDetails.length === 0 && (
             <div style={{ height: "300px" }}>
-              <span>No items for current user</span>
+              <span>The shopping card is empty</span>
             </div>
           )}
           {cartDetails && cartDetails.length > 0 && (

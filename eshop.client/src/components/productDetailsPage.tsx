@@ -4,6 +4,7 @@ import { httpGet, httpPost } from "../utils/service";
 import { Product } from "../types/product";
 import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
+import { ShoppingCard } from "../types/shopingCard";
 
 export function ProductDetailsPage() {
   const navigate = useNavigate();
@@ -27,22 +28,24 @@ export function ProductDetailsPage() {
   }, []);
 
   function addToCart() {
-    const cartItem = {
-      userId: userId,
-      items: [
-        {
-          productId: id,
-          quantity: quantity,
-        },
-      ],
-    };
-    httpPost("cart", cartItem)
-      .then((res) => {
-        // console.log(res);
-        navigate("/checkout");
-      })
-      .catch((err) => console.error(err));
-    console.log(cartItem);
+    if (userId && id) {
+      const cartItem: ShoppingCard = {
+        userId: userId,
+        items: [
+          {
+            productId: id,
+            quantity: quantity,
+          },
+        ],
+      };
+      httpPost("cart", cartItem)
+        .then((res) => {
+          // console.log(res);
+          navigate("/checkout");
+        })
+        .catch((err) => console.error(err));
+      console.log(cartItem);
+    }
   }
 
   const handleQuantityChange = (newQuantity: number) => {

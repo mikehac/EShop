@@ -21,7 +21,7 @@ export class CartController {
   ) {}
 
   @Post()
-  async setCart(@Body() shoppingCard: ShoppingCard) {
+  async setCart(@Body() shoppingCard: ShoppingCard): Promise<any> {
     return await this.cartService.setCart(shoppingCard);
   }
 
