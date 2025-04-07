@@ -5,6 +5,9 @@ import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
 import { useUserId } from "../hooks/useUserId";
 import { Address } from "../types/address";
+import { addItemsToCard } from "../utils/cart.service";
+import { useApp } from "../hooks/useApp";
+import { ShoppingCart } from "../types/shopingCart";
 
 export function CheckoutPage() {
   interface CartItem {
@@ -27,6 +30,7 @@ export function CheckoutPage() {
   });
   const [gridInteracted, setGridInteracted] = useState(false); // New state to track grid interaction
   const userId = useUserId();
+  const appContext = useApp();
 
   useEffect(() => {
     const fetchCartDetails = async () => {
@@ -64,16 +68,16 @@ export function CheckoutPage() {
     setSubTotal(newSubTotal);
     setTotal(newSubTotal + shipping);
     console.log("cartDetails", cartDetails);
-    if (gridInteracted) {
+    if (gridInteracted && userId) {
       //update the Redis
-      const shoppingCart = {
+      const shoppingCart: ShoppingCart = {
         userId: userId,
         items: cartDetails.map((item) => ({
           productId: item.id,
           quantity: item.quantity,
         })),
       };
-      httpPost("cart", shoppingCart).then((res) => console.log(res));
+      addItemsToCard(shoppingCart, appContext);
     }
   }, [cartDetails, shipping, gridInteracted]);
 
