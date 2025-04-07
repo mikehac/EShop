@@ -4,10 +4,13 @@ import { httpGet, httpPost } from "../utils/service";
 import { Product } from "../types/product";
 import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
-import { ShoppingCard } from "../types/shopingCard";
+import { ShoppingCart } from "../types/shopingCart";
+import { addItemsToCard } from "../utils/cart.service";
+import { useApp } from "../hooks/useApp";
 
 export function ProductDetailsPage() {
   const navigate = useNavigate();
+  const appContext = useApp();
 
   const { id } = useParams<{ id: string }>(); // Extract the 'id' parameter from the URL
 
@@ -29,7 +32,7 @@ export function ProductDetailsPage() {
 
   function addToCart() {
     if (userId && id) {
-      const cartItem: ShoppingCard = {
+      const cartItem: ShoppingCart = {
         userId: userId,
         items: [
           {
@@ -38,13 +41,18 @@ export function ProductDetailsPage() {
           },
         ],
       };
-      httpPost("cart", cartItem)
+      addItemsToCard(cartItem, appContext)
         .then((res) => {
-          // console.log(res);
           navigate("/checkout");
         })
         .catch((err) => console.error(err));
-      console.log(cartItem);
+      // httpPost("cart", cartItem)
+      //   .then((res) => {
+      //     // console.log(res);
+      //     navigate("/checkout");
+      //   })
+      //   .catch((err) => console.error(err));
+      // console.log(cartItem);
     }
   }
 

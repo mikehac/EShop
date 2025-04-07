@@ -10,13 +10,16 @@ import { UserDetailsPage } from "./components/userDetailsPage";
 import { CheckoutPage } from "./components/checkoutPage";
 import { ShoppingCartPage } from "./components/shoppingCartPage";
 import { Register } from "./components/register";
+import { createContext } from "react";
+import { AppProvider } from "./AppContext";
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
+  const itemsCartContext = createContext({ totalItemsInCart: 0 });
 
   if (loading) return <div>Loading...</div>; // Prevents flickering
   return (
-    <>
+    <AppProvider>
       <Header showMenu={isAuthenticated} />
 
       <Routes>
@@ -34,7 +37,7 @@ function App() {
         {/* Default Redirect */}
         <Route path="*" element={<Navigate to="/products" />} />
       </Routes>
-    </>
+    </AppProvider>
   );
 }
 

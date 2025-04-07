@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
 import { httpPost } from "../utils/service";
 import { useEffect, useState } from "react";
+import { useApp } from "../hooks/useApp";
 export function Header({ showMenu }: { showMenu: boolean }) {
   const [loggedIn, setLoggedIn] = useState<boolean>();
+  const { totalItemsInCart } = useApp();
   useEffect(() => {
     setLoggedIn(showMenu);
   }, [loggedIn]);
@@ -29,6 +30,9 @@ export function Header({ showMenu }: { showMenu: boolean }) {
           </li>
           <li>
             <a href="/checkout">Cart</a>
+            <span className="cartCount" style={{ display: loggedIn ? "inline" : "none" }}>
+              {totalItemsInCart} {/* Replace this with the actual item count */}
+            </span>
           </li>
           <li>
             <a href="/user">My details</a>

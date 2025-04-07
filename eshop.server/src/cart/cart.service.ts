@@ -35,7 +35,16 @@ export class CartService {
       shoppingCart.userId,
       JSON.stringify({ items: mergedItems }),
     );
-    return JSON.parse(JSON.stringify({ result: redisResult }));
+    const currentCart = JSON.parse(
+      await this.redisService.get(shoppingCart.userId),
+    );
+    const currentCartItemsCount = currentCart?.items?.length;
+    return JSON.parse(
+      JSON.stringify({
+        result: redisResult,
+        totalItems: currentCartItemsCount,
+      }),
+    );
   }
 
   async getCart(userId: string): Promise<any> {
