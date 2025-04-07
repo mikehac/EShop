@@ -46,13 +46,6 @@ export function ProductDetailsPage() {
           navigate("/checkout");
         })
         .catch((err) => console.error(err));
-      // httpPost("cart", cartItem)
-      //   .then((res) => {
-      //     // console.log(res);
-      //     navigate("/checkout");
-      //   })
-      //   .catch((err) => console.error(err));
-      // console.log(cartItem);
     }
   }
 
