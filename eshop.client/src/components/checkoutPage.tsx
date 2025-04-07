@@ -66,14 +66,14 @@ export function CheckoutPage() {
     console.log("cartDetails", cartDetails);
     if (gridInteracted) {
       //update the Redis
-      const shoppingCard = {
+      const shoppingCart = {
         userId: userId,
         items: cartDetails.map((item) => ({
           productId: item.id,
           quantity: item.quantity,
         })),
       };
-      httpPost("cart", shoppingCard).then((res) => console.log(res));
+      httpPost("cart", shoppingCart).then((res) => console.log(res));
     }
   }, [cartDetails, shipping, gridInteracted]);
 

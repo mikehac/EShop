@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from 'redissolution';
-import { ShoppingCard, ShoppingCardItem } from 'src/dtos/shoppingCard';
+import { ShoppingCart, ShoppingCartItem } from 'src/dtos/shoppingCart';
 
 @Injectable()
 export class CartService {
   constructor(private redisService: RedisService) {}
 
-  async setCart(shoppingCard: ShoppingCard) {
-    const existing = await this.getCart(shoppingCard.userId);
+  async setCart(shoppingCart: ShoppingCart) {
+    const existing = await this.getCart(shoppingCart.userId);
 
-    let mergedItems = shoppingCard.items;
+    let mergedItems = shoppingCart.items;
 
     if (existing && existing.items) {
       // Create a map of productId to items from the existing cart
@@ -17,22 +17,22 @@ export class CartService {
         existing.items.map((item) => [item.productId, item]),
       );
 
-      // Merge items: shoppingCard.items take precedence
-      mergedItems = shoppingCard.items.map((item) => {
+      // Merge items: shoppingCart.items take precedence
+      mergedItems = shoppingCart.items.map((item) => {
         existingItemsMap.delete(item.productId); // Remove the item from the map if it exists
-        return item; // Use the item from shoppingCard.items
+        return item; // Use the item from shoppingCart.items
       });
 
       // Add remaining items from the existing cart
       mergedItems = [
         ...mergedItems,
-        ...(Array.from(existingItemsMap.values()) as ShoppingCardItem[]),
+        ...(Array.from(existingItemsMap.values()) as ShoppingCartItem[]),
       ];
     }
 
     // Save the merged cart back to Redis
     const redisResult = await this.redisService.set(
-      shoppingCard.userId,
+      shoppingCart.userId,
       JSON.stringify({ items: mergedItems }),
     );
     return JSON.parse(JSON.stringify({ result: redisResult }));

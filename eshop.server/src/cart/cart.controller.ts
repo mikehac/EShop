@@ -7,7 +7,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ShoppingCard } from 'src/dtos/shoppingCard';
+import { ShoppingCart } from 'src/dtos/shoppingCart';
 import { CartService } from './cart.service';
 import { JwtAuthGuard } from 'src/Guards/JwtAuthGuard';
 import { ProductService } from 'src/product/product.service';
@@ -21,8 +21,8 @@ export class CartController {
   ) {}
 
   @Post()
-  async setCart(@Body() shoppingCard: ShoppingCard): Promise<any> {
-    return await this.cartService.setCart(shoppingCard);
+  async setCart(@Body() shoppingCart: ShoppingCart): Promise<any> {
+    return await this.cartService.setCart(shoppingCart);
   }
 
   @Get(':userId')
