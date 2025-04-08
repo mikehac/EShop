@@ -6,4 +6,5 @@ export class UserRegisterDto {
   username: string;
   @IsNotEmpty()
   password: string;
+  role: string = 'user';
 }
