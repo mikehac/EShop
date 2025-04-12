@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "outDir": "./dist",
+    "target": "ES6", // Or higher
+    "module": "commonjs", // Necessary for NestJS
+    "experimentalDecorators": true, // Enable decorators
+    "emitDecoratorMetadata": true, // Emit metadata for decorators
+    "strict": true // Optional: Helps ensure that TypeScript errors are caught early
+  }
+}
