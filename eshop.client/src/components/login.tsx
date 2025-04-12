@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-// import { getCart, postLogin } from "../utils/service";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -19,7 +18,7 @@ export default function Login() {
   const navigate = useNavigate();
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const response = await fetch(`${process.env.BASE_SERVER_URL}/auth/login`, {
+      const response = await fetch(`${process.env.BASE_LOGIN_URL}/auth/login`, {
         method: "POST",
         credentials: "include", // Ensures the JWT cookie is stored
         headers: { "Content-Type": "application/json" },
@@ -29,6 +28,9 @@ export default function Login() {
       if (!response.ok) {
         throw new Error("Invalid username or password.");
       }
+
+      const responseData = await response.json();
+      localStorage.setItem("jwtToken", responseData.token);
 
       navigate("/products"); // Redirect to main page after successful login
     } catch (error) {
