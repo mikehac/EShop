@@ -15,14 +15,13 @@ export default function Login() {
   const navigate = useNavigate();
   const onSubmit = async (data: LoginFormInput) => {
     try {
-      const response = await login(data);
-
-      if (!response.ok) {
-        throw new Error("Invalid username or password.");
+      const responseData = await login(data);
+      if (responseData.user.role !== "admin") {
+        throw new Error("You do not have permission to access this application.");
       }
 
-      const responseData = await response.json();
       localStorage.setItem("jwtToken", responseData.token);
+      localStorage.setItem("userRole", responseData.user.role);
       navigate("/orders");
     } catch (error) {
       if (error instanceof Error) {

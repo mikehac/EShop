@@ -15,13 +15,9 @@ export default function Login() {
   const navigate = useNavigate();
   const onSubmit = async (data: LoginFormInput) => {
     try {
-      const response = await login(data);
+      const responseData = await login(data);
+      
 
-      if (!response.ok) {
-        throw new Error("Invalid username or password.");
-      }
-
-      const responseData = await response.json();
       localStorage.setItem("jwtToken", responseData.token);
 
       navigate("/products"); // Redirect to main page after successful login

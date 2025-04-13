@@ -17,15 +17,8 @@ export class AuthController {
   @Post("login")
   async login(@Body() user: UserLogInDto, @Res() res: Response) {
     const loginResult = await this.authService.login(user.username, user.password);
-    // When sameSite is set to 'none', secure must be set to true
-    // When sameSite is set to 'lax', secure can be set to false
-    // res.cookie("jwt", loginResult.access_token, {
-    //   httpOnly: true,
-    //   sameSite: "none",
-    //   secure: true, // process.env.NODE_ENV === 'production',
-    //   maxAge: 24 * 60 * 60 * 1000,
-    // });
-    return res.json({ token: loginResult.access_token, message: "Login successful", status: 200 });
+
+    return res.json(loginResult);
   }
 
   @Post("logout")

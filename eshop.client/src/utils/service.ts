@@ -1,3 +1,4 @@
+//TODO: Check the posibility to export this functionality to project package, so it could be used in eshop.front and eshop.admin
 import { LoginFormInput } from "../types/loginFormInput";
 
 function getHeader() {
@@ -56,12 +57,17 @@ export function checkLogin() {
 }
 
 export async function login(login: LoginFormInput) {
-  return await fetch(`${process.env.BASE_LOGIN_URL}/auth/login`, {
+  const response = await fetch(`${process.env.BASE_LOGIN_URL}/auth/login`, {
     method: "POST",
     credentials: "include", // Ensures the JWT cookie is stored
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(login),
   });
+  if (!response.ok) {
+    throw new Error("Invalid username or password.");
+  }
+
+  return response.json();
 }
 export function logout() {
   let headers = getHeader();
