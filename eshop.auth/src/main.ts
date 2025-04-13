@@ -14,13 +14,20 @@ async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
 
   app.use(cookieParser()); // Enable cookie parsing
+  const allowedOrigins = (process.env.CORS_ORIGINS || "").split(","); // Example: "http://localhost:5173,http://example.com"
   app.enableCors({
     // origin: '*',
-    origin: process.env.CORS_ORIGIN, // 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   });
   app.useGlobalFilters(new appExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(process.env.APP_HOST || 3000);
+  await app.listen(process.env.APP_HOST || 3001);
 }
 bootstrap();

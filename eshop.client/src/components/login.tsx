@@ -1,29 +1,21 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-type LoginFormInputs = {
-  username: string;
-  password: string;
-};
+import { LoginFormInput } from "../types/loginFormInput";
+import { login } from "../utils/service";
 
 export default function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>();
+  } = useForm<LoginFormInput>();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
-  const onSubmit = async (data: LoginFormInputs) => {
+  const onSubmit = async (data: LoginFormInput) => {
     try {
-      const response = await fetch(`${process.env.BASE_LOGIN_URL}/auth/login`, {
-        method: "POST",
-        credentials: "include", // Ensures the JWT cookie is stored
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const response = await login(data);
 
       if (!response.ok) {
         throw new Error("Invalid username or password.");

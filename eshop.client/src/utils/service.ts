@@ -1,3 +1,5 @@
+import { LoginFormInput } from "../types/loginFormInput";
+
 function getHeader() {
   let headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -53,6 +55,14 @@ export function checkLogin() {
   });
 }
 
+export async function login(login: LoginFormInput) {
+  return await fetch(`${process.env.BASE_LOGIN_URL}/auth/login`, {
+    method: "POST",
+    credentials: "include", // Ensures the JWT cookie is stored
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(login),
+  });
+}
 export function logout() {
   let headers = getHeader();
 
