@@ -1,0 +1,4 @@
+GET http://localhost:3002/api/order
+
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UuaGF0c2tldmljaEBnbWFpbC5jb20iLCJzdWIiOiJjYWMyZjU4MS02MWUyLTQxMmUtYmM4Ny1mYzk1MjNkZDVkOTYiLCJpYXQiOjE3NDQ2NTI5MjMsImV4cCI6MTc0NDczOTMyM30.xd-PdX-O2A-ZeGhHe147m8y4CNHU46XhYm_vRjai3ss
