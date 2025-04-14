@@ -6,9 +6,11 @@ import { OrderStatusHistory } from './entities/order-status-history.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Order } from './entities/order.entity';
 import { Address } from './entities/address.entity';
+import { SharedModule } from '@mikehac/eshop-sharedauth';
 
 @Module({
   imports: [
+    SharedModule,
     TypeOrmModule.forFeature([Address, Order, OrderItem, OrderStatusHistory]),
     TypeOrmModule.forRoot({
       type: 'postgres',

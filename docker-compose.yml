@@ -57,6 +57,35 @@ services:
     networks:
       - eshopnetwork
     restart: always
+  eshop.order.server:
+    build:
+      context: ./eshop.order.server
+      dockerfile: ./dockerfile
+    env_file:
+      - ./eshop.order.server/.env.local
+    depends_on:
+      - eshop.order.db
+    ports:
+      - "3002:3002"
+    expose:
+      - 3002
+    networks:
+      - eshopnetwork
+    restart: always
+  eshop.admin:
+    build:
+      context: ./eshop.admin
+      dockerfile: ./dockerfile
+    env_file:
+      - ./eshop.admin/.env.local
+    ports:
+      - "85:85"
+    expose:
+      - 85
+    networks:
+      - eshopnetwork
+    depends_on:
+      - eshop.order.server
   eshop.broker:
     container_name: rabbitmq
     image: rabbitmq

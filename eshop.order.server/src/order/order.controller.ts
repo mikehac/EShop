@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { JwtAuthGuard } from '@mikehac/eshop-sharedauth';
 
 @Controller('api/order')
+@UseGuards(JwtAuthGuard)
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
