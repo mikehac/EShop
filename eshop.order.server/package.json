@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@eshop/sharedauth": "file:../eshop.shared.auth",
+    "@mikehac/eshop-sharedauth": "^1.0.0",
     "@nestjs/common": "^11.0.13",
     "@nestjs/core": "^11.0.13",
     "@nestjs/mapped-types": "*",

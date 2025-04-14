@@ -1,6 +1,7 @@
 {
-  "name": "@eshop/sharedauth",
+  "name": "@mikehac/eshop-sharedauth",
   "version": "1.0.0",
+  "description": "This package is used for sharing jwtStrategy and jwtAuthGUard between server side projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

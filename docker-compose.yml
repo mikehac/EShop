@@ -1,16 +1,32 @@
 services:
+  eshop.auth:
+    image: eshop.auth
+    build:
+      context: ./eshop.auth
+      dockerfile: ./dockerfile
+    env_file:
+      - ./eshop.auth/.env.local
+    ports:
+      - "3001:3001"
+    expose:
+      - 3001
+    depends_on:
+      - eshop.db
+    networks:
+      - eshopnetwork
   eshop.server:
     image: eshop.server
     build:
       context: ./eshop.server
       dockerfile: ./dockerfile
     env_file:
-      - ./eshop.server/.env.prod
+      - ./eshop.server/.env.local
     ports:
       - "3000:3000"
     expose:
       - 3000
     depends_on:
+      - eshop.db
       - eshop.broker
       - eshop.redis
     networks:
@@ -35,11 +51,12 @@ services:
       context: ./eshop.order
       dockerfile: ./dockerfile
     env_file:
-      - ./eshop.order/.env.prod
+      - ./eshop.order/.env.local
     depends_on:
       - eshop.broker
     networks:
       - eshopnetwork
+    restart: always
   eshop.broker:
     container_name: rabbitmq
     image: rabbitmq

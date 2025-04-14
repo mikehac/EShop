@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { SharedModule, JwtModule, jwtConstants, JwtStrategy, PassportModule } from "@eshop/sharedauth";
+import { SharedModule, JwtModule, jwtConstants, JwtStrategy, PassportModule } from "@mikehac/eshop-sharedauth";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { DatabaseModule } from "src/database/database.module";

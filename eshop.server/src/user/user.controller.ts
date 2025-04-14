@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Address } from 'src/entities/address.entity';
-import { JwtAuthGuard } from '@eshop/sharedauth';
+import { JwtAuthGuard } from '@mikehac/eshop-sharedauth';
 
 @UseGuards(JwtAuthGuard)
 @Controller('api/user')
