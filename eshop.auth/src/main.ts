@@ -28,6 +28,6 @@ async function bootstrap() {
   });
   app.useGlobalFilters(new appExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(process.env.APP_HOST || 3001);
+  await app.listen(process.env.PORT || 3001);
 }
 bootstrap();

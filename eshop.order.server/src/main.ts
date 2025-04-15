@@ -11,6 +11,6 @@ async function bootstrap() {
     origin: process.env.CORS_ORIGIN, // 'http://localhost:5173',
     credentials: true,
   });
-  await app.listen(3002);
+  await app.listen(process.env.PORT || 3002);
 }
 bootstrap();
