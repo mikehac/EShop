@@ -1,13 +1,13 @@
+import * as dotenv from "dotenv";
+// Load environment variables from the .env file
+dotenv.config();
+
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 // import { AppModule } from './app.module';
-import * as dotenv from "dotenv";
 import { appExceptionsFilter } from "./customFilters/appExceptionsFilter";
 import * as cookieParser from "cookie-parser";
 import { AuthModule } from "./auth/auth.module";
-
-// Load environment variables from the .env file
-dotenv.config();
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
