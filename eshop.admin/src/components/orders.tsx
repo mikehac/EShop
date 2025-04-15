@@ -26,13 +26,29 @@ export function Orders() {
 
     fetchOrders();
   }, []);
+  const dateTimeFormater = (value: any) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value);
+  };
+
+  const dateFormatter = (value: any) => {
+    return new Date(value).toLocaleDateString("en-GB", {
+      year: "numeric",
+      day: "numeric",
+      month: "numeric",
+    });
+  };
+
   const columns: GridColDef[] = [
-    { field: "shipping", headerName: "Shipping" },
-    { field: "subtotal", headerName: "Sub Total" },
-    { field: "total", headerName: "Total" },
+    { field: "userId", headerName: "User ID" },
+    { field: "shipping", headerName: "Shipping", valueFormatter: dateTimeFormater },
+    { field: "subtotal", headerName: "Sub Total", valueFormatter: dateTimeFormater },
+    { field: "total", headerName: "Total", valueFormatter: dateTimeFormater },
     { field: "status", headerName: "Status" },
-    { field: "createdAt", headerName: "Created at" },
-    { field: "updatedAt", headerName: "Updated at" },
+    { field: "createdAt", headerName: "Created at", valueFormatter: dateFormatter },
+    { field: "updatedAt", headerName: "Updated at", valueFormatter: dateFormatter },
   ];
   return (
     <div>
