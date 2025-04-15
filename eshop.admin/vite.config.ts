@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
       "process.env": env,
     },
     plugins: [react()],
+    server: {
+      port: 5174,
+    },
     build: {
       outDir: "dist", // Output directory for the build
       assetsDir: "assets", // Directory for static assets within the output folder
