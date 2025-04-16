@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { OrderModule } from './order/order.module';
 import * as dotenv from 'dotenv';
-
 // Load environment variables from the .env file
 dotenv.config();
+
+import { NestFactory } from '@nestjs/core';
+import { OrderModule } from './order/order.module';
 async function bootstrap() {
   const app = await NestFactory.create(OrderModule);
   app.enableCors({
