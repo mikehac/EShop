@@ -4,6 +4,8 @@ import { httpGet } from "../utils/service";
 
 interface OrderItem {
   userId: string;
+  userName: string;
+  address: string;
   shipping: number;
   subtotal: number;
   total: number;
@@ -20,7 +22,10 @@ export function Orders() {
         setOrders([]);
         return;
       }
-
+      res.map((order: any) => {
+        order.userName = order.user.username;
+        order.address = `${order.address.street}, ${order.address.city}, ${order.address.zip}, ${order.address.country}`;
+      });
       setOrders(res);
     };
 
@@ -42,7 +47,22 @@ export function Orders() {
   };
 
   const columns: GridColDef[] = [
-    { field: "userId", headerName: "User ID" },
+    {
+      field: "id",
+      headerName: "Order Id",
+      width: 300,
+    },
+    {
+      field: "userName",
+      headerName: "Username",
+      width: 200,
+      renderCell: (params) => (
+        <a href={`mailto:${params.value}`} style={{ textDecoration: "none", color: "blue" }}>
+          {params.value}
+        </a>
+      ),
+    },
+    { field: "address", headerName: "Address", width: 150 },
     { field: "shipping", headerName: "Shipping", valueFormatter: dateTimeFormater },
     { field: "subtotal", headerName: "Sub Total", valueFormatter: dateTimeFormater },
     { field: "total", headerName: "Total", valueFormatter: dateTimeFormater },
