@@ -7,6 +7,7 @@ import { User } from 'src/entities/user.enity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User, Address, ProductCategory, Product]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'nas',
