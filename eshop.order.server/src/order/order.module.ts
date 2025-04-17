@@ -7,9 +7,11 @@ import { OrderItem } from './entities/order-item.entity';
 import { Order } from './entities/order.entity';
 import { Address } from './entities/address.entity';
 import { SharedModule } from '@mikehac/eshop-sharedauth';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     SharedModule,
     TypeOrmModule.forFeature([Address, Order, OrderItem, OrderStatusHistory]),
     TypeOrmModule.forRoot({

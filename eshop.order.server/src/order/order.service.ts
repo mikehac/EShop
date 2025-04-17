@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Address } from './entities/address.entity';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class OrderService {
@@ -13,14 +15,35 @@ export class OrderService {
     @InjectRepository(Order) private orderRepo: Repository<Order>,
     @InjectRepository(OrderItem) private orderItemRepo: Repository<OrderItem>,
     @InjectRepository(Address) private addressRepo: Repository<Address>,
+    private readonly httpService: HttpService,
   ) {}
   create(createOrderDto: CreateOrderDto) {
     return 'This action adds a new order';
   }
 
   async findAll() {
-    return await this.orderRepo.find({
-      relations: ['items'],
+    const orders = await this.orderRepo.find({
+      relations: ['items', 'address'],
+    });
+
+    const userIds = [...new Set(orders.map((order) => order.userId))];
+    const users = await firstValueFrom(
+      this.httpService.get(
+        `${process.env.USER_SERVER_URL}/user/ids/${userIds.join(',')}`,
+      ),
+    );
+    const usersData = users.data;
+    console.log(usersData);
+    return orders.map((order) => {
+      const user = usersData.find((user) => user.id === order.userId);
+      return {
+        ...order,
+        user: {
+          id: user.id,
+          username: user.username,
+          role: user.role,
+        },
+      };
     });
   }
 
