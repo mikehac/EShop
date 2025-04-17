@@ -33,7 +33,6 @@ export class OrderService {
       ),
     );
     const usersData = users.data;
-    console.log(usersData);
     return orders.map((order) => {
       const user = usersData.find((user) => user.id === order.userId);
       return {
