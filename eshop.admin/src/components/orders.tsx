@@ -9,6 +9,7 @@ interface OrderItem {
   shipping: number;
   subtotal: number;
   total: number;
+  totalItems: number;
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -25,6 +26,7 @@ export function Orders() {
       res.map((order: any) => {
         order.userName = order.user.username;
         order.address = `${order.address.street}, ${order.address.city}, ${order.address.zip}, ${order.address.country}`;
+        order.totalItems = order.items.length;
       });
       setOrders(res);
     };
@@ -50,7 +52,7 @@ export function Orders() {
     {
       field: "id",
       headerName: "Order Id",
-      width: 300,
+      width: 220,
     },
     {
       field: "userName",
@@ -67,6 +69,7 @@ export function Orders() {
     { field: "subtotal", headerName: "Sub Total", valueFormatter: dateTimeFormater },
     { field: "total", headerName: "Total", valueFormatter: dateTimeFormater },
     { field: "status", headerName: "Status" },
+    { field: "totalItems", headerName: "Ordered products" },
     { field: "createdAt", headerName: "Created at", valueFormatter: dateFormatter },
     { field: "updatedAt", headerName: "Updated at", valueFormatter: dateFormatter },
   ];
