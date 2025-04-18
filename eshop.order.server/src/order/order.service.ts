@@ -8,6 +8,7 @@ import { OrderItem } from './entities/order-item.entity';
 import { Address } from './entities/address.entity';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { RedisService } from 'redissolution';
 
 @Injectable()
 export class OrderService {
@@ -16,6 +17,7 @@ export class OrderService {
     @InjectRepository(OrderItem) private orderItemRepo: Repository<OrderItem>,
     @InjectRepository(Address) private addressRepo: Repository<Address>,
     private readonly httpService: HttpService,
+    private redisService: RedisService,
   ) {}
   create(createOrderDto: CreateOrderDto) {
     return 'This action adds a new order';
@@ -27,22 +29,64 @@ export class OrderService {
     });
 
     const userIds = [...new Set(orders.map((order) => order.userId))];
-    const users = await firstValueFrom(
-      this.httpService.get(
-        `${process.env.USER_SERVER_URL}/user/ids/${userIds.join(',')}`,
-      ),
+    // get users from cache(Redis)
+    let cachedUsers = await this.getFromCache(userIds);
+    // find users that are not in cache yet
+    const missingUserIds = userIds.filter(
+      (id) => !cachedUsers.some((cachedUser) => cachedUser.userId === id),
     );
-    const usersData = users.data;
+
+    if (missingUserIds.length > 0) {
+      // get users which are not in cache from user server
+      const usersObservable = await firstValueFrom(
+        this.httpService.get(
+          `${process.env.USER_SERVER_URL}/user/ids/${missingUserIds.join(',')}`,
+        ),
+      );
+      const usersFromDb = usersObservable.data;
+
+      // Set them to cache
+      await this.setToCache(usersFromDb);
+      cachedUsers = await this.getFromCache(userIds);
+    }
+
+    // Map orders with user data
     return orders.map((order) => {
-      const user = usersData.find((user) => user.id === order.userId);
+      const user = cachedUsers.find((user) => user.userId === order.userId);
+      if (user) {
+        return {
+          ...order,
+          user: {
+            id: user.userId,
+            username: user.user.username,
+          },
+        };
+      }
       return {
         ...order,
         user: {
-          id: user.id,
-          username: user.username,
-          role: user.role,
+          id: order.userId,
+          username: 'not found',
         },
       };
+    });
+  }
+
+  private async getFromCache(userIds: string[]) {
+    const usersFromCache = await Promise.all(
+      userIds.map(async (userId) => {
+        const user = await this.redisService.get(`user_${userId}`);
+        if (user) return { userId, user: JSON.parse(user) };
+        return null;
+      }),
+    );
+
+    return usersFromCache.filter((user) => user !== null);
+  }
+
+  private async setToCache(users: any[]) {
+    users.map(async (user) => {
+      await this.redisService.set(`user_${user.id}`, JSON.stringify(user));
     });
   }
 

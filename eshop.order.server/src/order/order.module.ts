@@ -8,6 +8,7 @@ import { Order } from './entities/order.entity';
 import { Address } from './entities/address.entity';
 import { SharedModule } from '@mikehac/eshop-sharedauth';
 import { HttpModule } from '@nestjs/axios';
+import { RedisService } from 'redissolution';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { HttpModule } from '@nestjs/axios';
     }),
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService, RedisService],
 })
 export class OrderModule {}
