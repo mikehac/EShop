@@ -24,52 +24,61 @@ export class OrderService {
   }
 
   async findAll() {
-    const orders = await this.orderRepo.find({
-      relations: ['items', 'address'],
-    });
+    try {
+      // Fetch all orders from the database
+      const orders = await this.orderRepo.find({
+        relations: ['items', 'address'],
+      });
 
-    const userIds = [...new Set(orders.map((order) => order.userId))];
-    // get users from cache(Redis)
-    let cachedUsers = await this.getFromCache(userIds);
-    // find users that are not in cache yet
-    const missingUserIds = userIds.filter(
-      (id) => !cachedUsers.some((cachedUser) => cachedUser.userId === id),
-    );
-
-    if (missingUserIds.length > 0) {
-      // get users which are not in cache from user server
-      const usersObservable = await firstValueFrom(
-        this.httpService.get(
-          `${process.env.USER_SERVER_URL}/user/ids/${missingUserIds.join(',')}`,
-        ),
+      const userIds = [...new Set(orders.map((order) => order.userId))];
+      // get users from cache(Redis)
+      let cachedUsers = await this.getFromCache(userIds);
+      // find users that are not in cache yet
+      const missingUserIds = userIds.filter(
+        (id) => !cachedUsers.some((cachedUser) => cachedUser.userId === id),
       );
-      const usersFromDb = usersObservable.data;
 
-      // Set them to cache
-      await this.setToCache(usersFromDb);
-      cachedUsers = await this.getFromCache(userIds);
-    }
+      if (missingUserIds.length > 0) {
+        // get users which are not in cache from user server
+        const usersObservable = await firstValueFrom(
+          this.httpService.get(
+            `${process.env.USER_SERVER_URL}/user/ids/${missingUserIds.join(',')}`,
+          ),
+        );
+        const usersFromDb = usersObservable.data;
 
-    // Map orders with user data
-    return orders.map((order) => {
-      const user = cachedUsers.find((user) => user.userId === order.userId);
-      if (user) {
+        // Set them to cache
+        await this.setToCache(usersFromDb);
+        cachedUsers = await this.getFromCache(userIds);
+      }
+
+      // Map orders with user data
+      return orders.map((order) => {
+        const user = cachedUsers.find((user) => user.userId === order.userId);
+        if (user) {
+          return {
+            ...order,
+            user: {
+              id: user.userId,
+              username: user.user.username,
+            },
+          };
+        }
         return {
           ...order,
           user: {
-            id: user.userId,
-            username: user.user.username,
+            id: order.userId,
+            username: 'not found',
           },
         };
+      });
+    } catch (error) {
+      console.error('Error fetching orders:', error.message); // Log the error message
+      console.error('Stack trace:', error.stack); // Log the stack trace
+      if (error.response?.data) {
+        console.error('Error response data:', error.response.data); // Log additional error details if available
       }
-      return {
-        ...order,
-        user: {
-          id: order.userId,
-          username: 'not found',
-        },
-      };
-    });
+    }
   }
 
   private async getFromCache(userIds: string[]) {
