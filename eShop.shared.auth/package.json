@@ -1,0 +1,22 @@
+{
+  "name": "@mikehac/eshop-sharedauth",
+  "version": "1.0.1",
+  "description": "This package is used for sharing jwtStrategy and jwtAuthGUard between server side projects",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.17",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.5",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "@types/passport-jwt": "^4.0.1"
+  }
+}

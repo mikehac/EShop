@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { httpGet } from "../utils/service";
+import { getMe, httpGet } from "../utils/service";
 
 export function useUserId() {
   const [userId, setUserId] = useState<string | null>(() => {
@@ -11,7 +11,8 @@ export function useUserId() {
     const fetchUserId = async () => {
       if (!userId) {
         try {
-          const data = await httpGet("auth/me");
+          const response = await getMe();
+          const data = await response.json();
           setUserId(data.id);
           localStorage.setItem("userId", data.id); // Save userId to localStorage
         } catch (error) {

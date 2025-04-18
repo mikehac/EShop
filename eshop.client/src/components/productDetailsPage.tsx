@@ -7,8 +7,11 @@ import { ProductCounter } from "./productCounter";
 import { ShoppingCart } from "../types/shopingCart";
 import { addItemsToCard } from "../utils/cart.service";
 import { useApp } from "../hooks/useApp";
+import { useUserId } from "../hooks/useUserId";
 
 export function ProductDetailsPage() {
+  const userId = useUserId();
+
   const navigate = useNavigate();
   const appContext = useApp();
 
@@ -16,7 +19,7 @@ export function ProductDetailsPage() {
 
   const [product, setProduct] = useState<Product>();
   const [quantity, setQuantity] = useState<number>(1); // State to store the quantity
-  const [userId, setUserId] = useState<string | null>("");
+  // const [userId, setUserId] = useState<string | null>("");
   useEffect(() => {
     httpGet("product", id).then((res) => {
       setProduct(res);
@@ -24,10 +27,13 @@ export function ProductDetailsPage() {
   }, []);
 
   useEffect(() => {
-    httpGet("auth/me").then((data) => {
-      setUserId(data.id);
-      localStorage.setItem("userId", data.id);
-    });
+    // httpGet("auth/me").then((data) => {
+    //   setUserId(data.id);
+    //   localStorage.setItem("userId", data.id);
+    // });
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    }
   }, []);
 
   function addToCart() {
@@ -71,7 +77,7 @@ export function ProductDetailsPage() {
               <label>Ship to:</label>
             </div>
             <div>
-              <label>Quentity:</label>
+              <label>Quantity:</label>
               <div>
                 <ProductCounter onQuantityChange={handleQuantityChange} value={1} />
               </div>

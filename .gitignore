@@ -212,3 +212,5 @@ web/.vscode/
 
 # Databases credationals
 eshop.db/
+
+.npmrc

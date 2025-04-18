@@ -1,0 +1,8 @@
+{
+  "name": "eshop",
+  "private": true,
+  "workspaces": [
+    "eshop.server",
+    "eshop.shared.auth"
+  ]
+}

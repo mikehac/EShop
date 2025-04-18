@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { httpPost } from "../utils/service";
+import { httpPost, logout } from "../utils/service";
 import { useEffect, useState } from "react";
 import { useApp } from "../hooks/useApp";
 export function Header({ showMenu }: { showMenu: boolean }) {
@@ -11,11 +11,13 @@ export function Header({ showMenu }: { showMenu: boolean }) {
 
   const navigate = useNavigate();
   const handleLogoClick = () => {
-    httpPost("auth/logout").then((res) => {
-      console.log(res);
-      if (res.success) {
-        navigate("/");
-      }
+    logout().then((res) => {
+      res.json().then((data) => {
+        if (data.success) {
+          localStorage.removeItem("jwtToken");
+          navigate("/");
+        }
+      });
     });
   };
   return (

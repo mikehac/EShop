@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ShoppingCart } from 'src/dtos/shoppingCart';
 import { CartService } from './cart.service';
-import { JwtAuthGuard } from 'src/Guards/JwtAuthGuard';
+import { JwtAuthGuard } from '@mikehac/eshop-sharedauth';
 import { ProductService } from 'src/product/product.service';
 
 @Controller('api/cart')

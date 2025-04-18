@@ -1,9 +1,10 @@
 # Use the official Node.js image as the base image
-FROM node:18-alpine
+FROM node:slim
 
 # Set the working directory inside the container
 WORKDIR /app
 
+COPY ./.npmrc ./
 # Copy only package.json and package-lock.json to leverage Docker caching
 COPY ./package*.json ./
 
