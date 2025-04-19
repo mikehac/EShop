@@ -62,4 +62,13 @@ export class CartService {
       throw error;
     }
   }
+
+  async deleteCart(userId: string): Promise<any> {
+    try {
+      return await this.redisService.del(userId);
+    } catch (error) {
+      console.error('Error in CartService.deleteCart:', error.message);
+      throw error;
+    }
+  }
 }

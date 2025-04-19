@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { httpGet, httpPost } from "../utils/service";
+import { httpDelete, httpGet, httpPost } from "../utils/service";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
@@ -93,7 +93,7 @@ export function CheckoutPage() {
     setCartDetails((prevDetails) => prevDetails.filter((item) => item.id !== id));
   };
 
-  const purchaseHandler = (total: number, subtotal: number, shipping: number, address: Address, cartDetails: CartItem[]) => {
+  const purchaseHandler = async (total: number, subtotal: number, shipping: number, address: Address, cartDetails: CartItem[]) => {
     const messageToSend = {
       userId,
       address,
@@ -102,7 +102,16 @@ export function CheckoutPage() {
       subTotal: subtotal,
       total,
     };
-    httpPost("mqmanager/sendPurchuse", messageToSend).then((res) => console.log(res));
+    const purchuseResponse = await httpPost("mqmanager/sendPurchuse", messageToSend);
+    if (purchuseResponse.statusCode === 200) {
+      localStorage.removeItem("totalItemsInCart");
+      if (userId) {
+        const clearCartResponse = await httpDelete("cart", userId);
+        if (clearCartResponse.statusCode === 200) {
+          console.log("cart cleared successfully");
+        }
+      }
+    }
   };
 
   const columns: GridColDef[] = [

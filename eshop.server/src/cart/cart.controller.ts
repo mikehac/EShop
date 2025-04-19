@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -47,5 +48,16 @@ export class CartController {
       result ??
       new NotFoundException(`The user with id ${userId} doesn't have a cart`)
     );
+  }
+
+  @Delete(':userId')
+  async deleteCart(@Param('userId') userId: string): Promise<any> {
+    const redisResult = await this.cartService.deleteCart(userId);
+    if (!redisResult) {
+      throw new NotFoundException(
+        `The user with id ${userId} doesn't have a cart items`,
+      );
+    }
+    return redisResult;
   }
 }

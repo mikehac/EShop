@@ -46,6 +46,16 @@ export function httpPut(endpoint: string, body: any = null) {
   }).then((resp) => resp.json());
 }
 
+export function httpDelete(endpoint: string, id: string) {
+  const url = `${endpoint}/${id}`; // Construct the URL dynamically
+  let headers = getHeader();
+  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+    method: "DELETE",
+    credentials: "include",
+    headers,
+  }).then((resp) => resp.json());
+}
+
 export function checkLogin() {
   let headers = getHeader();
 

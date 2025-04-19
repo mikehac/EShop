@@ -7,6 +7,9 @@ export class MqmanagerController {
 
   @Post('sendPurchuse')
   async sendPurchuseMessage(@Body() message) {
-    this.mqservice.produceMessage(message);
+    await this.mqservice.produceMessage(message);
+    return {
+      statusCode: 200,
+    };
   }
 }
