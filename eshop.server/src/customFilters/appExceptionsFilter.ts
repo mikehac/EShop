@@ -18,6 +18,7 @@ export class appExceptionsFilter implements ExceptionFilter {
       status = exception.getStatus();
       message = exception.getResponse();
     } else if (exception instanceof Error) {
+      //TODO: Collect logs with winston or similar library
       message = exception.message;
     }
 

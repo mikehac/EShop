@@ -23,6 +23,7 @@ export class UserService {
 
       return user;
     } catch (error) {
+      //TODO: Collect logs with winston or similar library
       console.error('Error fetching user by ID:', error);
       throw error;
     }
@@ -51,6 +52,7 @@ export class UserService {
       // Save the updated address
       return await this.addressRepo.save(updatedAddress);
     } catch (error) {
+      //TODO: Collect logs with winston or similar library
       console.error('Error updating user address:', error);
       throw error;
     }

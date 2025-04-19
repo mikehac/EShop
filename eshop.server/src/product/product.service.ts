@@ -8,37 +8,70 @@ export class ProductService {
   constructor(@InjectRepository(Product) private repo: Repository<Product>) {}
 
   async getAllProducts() {
-    return await this.repo.find();
+    try {
+      return await this.repo.find();
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductService.getAllProducts:', error.message);
+      throw error;
+    }
   }
 
   async getByCategoryId(categoryId: number) {
-    return await this.repo.find({
-      where: { categoryId },
-      relations: ['category'],
-    });
+    try {
+      return await this.repo.find({
+        where: { categoryId },
+        relations: ['category'],
+      });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductService.getByCategoryId:', error.message);
+      throw error;
+    }
   }
 
   async getById(id: number) {
-    return await this.repo.findOne({ where: { id }, relations: ['category'] });
+    try {
+      return await this.repo.findOne({
+        where: { id },
+        relations: ['category'],
+      });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductService.getById:', error.message);
+      throw error;
+    }
   }
 
   async getByIds(ids: number[]) {
-    return await this.repo.find({ where: { id: In(ids) } });
+    try {
+      return await this.repo.find({ where: { id: In(ids) } });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductService.getByIds:', error.message);
+      throw error;
+    }
   }
 
   search(searchTerm: string) {
-    return this.repo
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
-      .where('LOWER(product.name) LIKE :searchTerm', {
-        searchTerm: `%${searchTerm.toLowerCase()}%`,
-      })
-      .orWhere('LOWER(product.description) LIKE :searchTerm', {
-        searchTerm: `%${searchTerm.toLowerCase()}%`,
-      })
-      .orWhere('LOWER(category.name) LIKE :searchTerm', {
-        searchTerm: `%${searchTerm.toLowerCase()}%`,
-      })
-      .getMany();
+    try {
+      return this.repo
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.category', 'category')
+        .where('LOWER(product.name) LIKE :searchTerm', {
+          searchTerm: `%${searchTerm.toLowerCase()}%`,
+        })
+        .orWhere('LOWER(product.description) LIKE :searchTerm', {
+          searchTerm: `%${searchTerm.toLowerCase()}%`,
+        })
+        .orWhere('LOWER(category.name) LIKE :searchTerm', {
+          searchTerm: `%${searchTerm.toLowerCase()}%`,
+        })
+        .getMany();
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductService.search:', error.message);
+      throw error;
+    }
   }
 }

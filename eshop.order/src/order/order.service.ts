@@ -57,6 +57,7 @@ export class OrderService {
       // Commit the transaction
       await queryRunner.commitTransaction();
     } catch (error) {
+      //TODO: Collect logs with winston or similar library
       await queryRunner.rollbackTransaction();
       console.error('Error saving new order:', error);
     } finally {

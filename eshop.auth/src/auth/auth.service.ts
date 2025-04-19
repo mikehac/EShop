@@ -14,41 +14,53 @@ export class AuthService {
   ) {}
 
   async register(user: UserRegisterDto) {
-    const existingUser = await this.repo.findOne({
-      where: { username: user.username },
-    });
-    if (existingUser) {
-      throw new BadRequestException(`User with username ${user.username} already exists`);
+    try {
+      const existingUser = await this.repo.findOne({
+        where: { username: user.username },
+      });
+      if (existingUser) {
+        throw new BadRequestException(`User with username ${user.username} already exists`);
+      }
+
+      const saltRounds = 10;
+      user.password = await bcrypt.hash(user.password, saltRounds);
+
+      const userEntity: User = this.repo.create(user);
+      return this.repo.save(userEntity);
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error("Error in AuthService.register:", error.message);
+      throw error;
     }
-
-    const saltRounds = 10;
-    user.password = await bcrypt.hash(user.password, saltRounds);
-
-    const userEntity: User = this.repo.create(user);
-    return this.repo.save(userEntity);
   }
 
   async login(username: string, password: string) {
-    const user = await this.repo.findOne({
-      where: { username },
-    });
-    if (!user) {
-      throw new UnauthorizedException("Invalid credentials");
-    }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException("Invalid credentials");
-    }
+    try {
+      const user = await this.repo.findOne({
+        where: { username },
+      });
+      if (!user) {
+        throw new UnauthorizedException("Invalid credentials");
+      }
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException("Invalid credentials");
+      }
 
-    const payload = { username: user.username, sub: user.id };
+      const payload = { username: user.username, sub: user.id };
 
-    return {
-      token: this.jwtService.sign(payload),
-      user: {
-        id: user.id,
-        username: user.username,
-        role: user.role,
-      },
-    };
+      return {
+        token: this.jwtService.sign(payload),
+        user: {
+          id: user.id,
+          username: user.username,
+          role: user.role,
+        },
+      };
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error("Error in AuthService.login:", error.message);
+      throw error;
+    }
   }
 }

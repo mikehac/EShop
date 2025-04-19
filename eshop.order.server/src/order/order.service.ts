@@ -73,6 +73,7 @@ export class OrderService {
         };
       });
     } catch (error) {
+      //TODO: Collect logs with winston or similar library
       console.error('Error fetching orders:', error.message); // Log the error message
       console.error('Stack trace:', error.stack); // Log the stack trace
       if (error.response?.data) {
@@ -100,38 +101,56 @@ export class OrderService {
   }
 
   async findOne(id: string) {
-    return await this.orderRepo.findOne({
-      where: { id },
-      relations: ['items'],
-    });
+    try {
+      return await this.orderRepo.findOne({
+        where: { id },
+        relations: ['items'],
+      });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in OrderService.findOne:', error.message);
+      throw error;
+    }
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto) {
-    const order = await this.orderRepo.findOne({ where: { id } });
-    if (!order) {
-      throw new Error(`Order with id ${id} not found`);
+    try {
+      const order = await this.orderRepo.findOne({ where: { id } });
+      if (!order) {
+        throw new Error(`Order with id ${id} not found`);
+      }
+      const newOrder: Order = {
+        id,
+        userId: order.userId,
+        shipping: updateOrderDto.shipping ?? order.shipping,
+        subtotal: updateOrderDto.subtotal ?? order.subtotal,
+        total: updateOrderDto.total ?? order.total,
+        status: updateOrderDto.status ?? order.status,
+        createdAt: order.createdAt,
+        updatedAt: new Date(),
+        items: order.items,
+        address: order.address,
+        statusHistory: order.statusHistory,
+      };
+      return await this.orderRepo.update(id, newOrder);
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in OrderService.update:', error.message);
+      throw error;
     }
-    const newOrder: Order = {
-      id,
-      userId: order.userId,
-      shipping: updateOrderDto.shipping ?? order.shipping,
-      subtotal: updateOrderDto.subtotal ?? order.subtotal,
-      total: updateOrderDto.total ?? order.total,
-      status: updateOrderDto.status ?? order.status,
-      createdAt: order.createdAt,
-      updatedAt: new Date(),
-      items: order.items,
-      address: order.address,
-      statusHistory: order.statusHistory,
-    };
-    return await this.orderRepo.update(id, newOrder);
   }
 
   async remove(id: string) {
-    const order = await this.orderRepo.findOne({ where: { id } });
-    if (order) {
-      return await this.orderRepo.remove(order);
+    try {
+      const order = await this.orderRepo.findOne({ where: { id } });
+      if (order) {
+        return await this.orderRepo.remove(order);
+      }
+      throw new Error(`Order with id ${id} not found`);
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in OrderService.remove:', error.message);
+      throw error;
     }
-    throw new Error(`Order with id ${id} not found`);
   }
 }

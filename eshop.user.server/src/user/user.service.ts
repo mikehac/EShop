@@ -13,21 +13,39 @@ export class UserService {
   }
 
   findAll() {
-    return this.repo.find();
+    try {
+      return this.repo.find();
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in UserService.findAll:', error.message);
+      throw new Error('Failed to fetch users');
+    }
   }
 
   findOne(id: string) {
-    return this.repo.findBy({ id });
+    try {
+      return this.repo.findBy({ id });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in UserService.findOne:', error.message);
+      throw new Error('Failed to fetch user');
+    }
   }
 
   async findByIds(ids: string[]): Promise<Partial<User>[]> {
-    const users = await this.repo.find({
-      where: { id: In(ids) },
-    });
-    return users.map((user) => {
-      const { password, ...userWithoutPassword } = user;
-      return userWithoutPassword;
-    });
+    try {
+      const users = await this.repo.find({
+        where: { id: In(ids) },
+      });
+      return users.map((user) => {
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+      });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in UserService.findByIds:', error.message);
+      throw new Error('Failed to fetch users');
+    }
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

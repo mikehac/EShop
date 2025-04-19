@@ -24,7 +24,9 @@ export class MqmanagerService {
 
       console.log('Message sent:', message);
     } catch (error) {
+      //TODO: Collect logs with winston or similar library
       console.error('Producer error:', error);
+      throw error;
     } finally {
       await this.producer.close();
     }

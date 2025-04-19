@@ -10,10 +10,22 @@ export class ProductCategoryService {
     private repo: Repository<ProductCategory>,
   ) {}
   async getAll() {
-    return await this.repo.find();
+    try {
+      return await this.repo.find();
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductCategoryService.getAll:', error.message);
+      throw error;
+    }
   }
 
   async getById(id: number) {
-    return await this.repo.findOne({ where: { id } });
+    try {
+      return await this.repo.findOne({ where: { id } });
+    } catch (error) {
+      //TODO: Collect logs with winston or similar library
+      console.error('Error in ProductCategoryService.getById:', error.message);
+      throw error;
+    }
   }
 }
