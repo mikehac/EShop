@@ -11,7 +11,7 @@ import {
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { JwtAuthGuard } from '@mikehac/eshop-sharedauth';
+import { JwtAuthGuard } from '@mike_hac/eshop-sharedauth';
 
 @Controller('api/order')
 @UseGuards(JwtAuthGuard)

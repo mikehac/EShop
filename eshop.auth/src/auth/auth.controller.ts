@@ -3,7 +3,7 @@ import { Response } from "express";
 import { AuthService } from "./auth.service";
 import { UserRegisterDto } from "src/dtos/user.register.dto";
 import { UserLogInDto } from "src/dtos/user.login.dto";
-import { JwtAuthGuard } from "@mikehac/eshop-sharedauth";
+import { JwtAuthGuard } from "@mike_hac/eshop-sharedauth";
 
 @Controller("api/auth")
 export class AuthController {

@@ -4,7 +4,7 @@ FROM node:slim
 # Set the working directory inside the container
 WORKDIR /app
 
-COPY ./.npmrc ./
+# COPY ./.npmrc ./
 # Copy only package.json and package-lock.json to leverage Docker caching
 COPY ./package*.json ./
 
