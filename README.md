@@ -91,44 +91,47 @@ This project is licensed under the [MIT License](LICENSE).
 
 To run the project locally, follow these steps **after cloning the repository**:
 
-### 1. Create a Database Volume Folder
+### Run Environment Setup Script
 
-In the **main folder**, create a new folder:
+Simply run the provided batch script to set up all necessary environment files:
 
+```bash
+envGenerator.bat
 ```
-eshop.db/
-```
 
-Inside this folder, create two files:
+This script will:
+1. Check if the `eshop.db` folder exists, create it if needed
+2. Create database configuration files in the `eshop.db` folder
+3. Create a root `.env` file with Postgres volume paths
+4. Set up appropriate `.env` or `.env.local` files in each service directory
 
-#### `eshop.db/.env`
+> ⚠️ After running the script, you may want to review the generated files and replace default values like `VERY_SECURED_PASSWORD` and `VERY_SECRET_AND_LONG_KEY` with your own secure credentials.
 
+For reference, here are the environment variables that will be configured:
+
+#### Database Configuration
+
+The script creates these files in the `eshop.db` folder:
+
+##### `eshop.db/.env`
 ```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=VERY_SECURED_PASSWORD
 POSTGRES_DB=eshop
 ```
 
-#### `eshop.db/.env.order`
-
+##### `eshop.db/.env.order`
 ```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=VERY_SECURED_PASSWORD
 POSTGRES_DB=eshop.orders
 ```
 
-Additionally, in the **root folder**, create a file `.env` with the following keys:
+#### Service Configuration
 
-```
-POSTGRES_VOLUME_PATH_1=C:/YOUR_EXISTING_FOLDER1
-POSTGRES_VOLUME_PATH_2=C:/YOUR_EXISTING_FOLDER2
-```
+Each service will have its own `.env.local` file with environment variables similar to:
 
-### 2. Add `.env.local` Files to Each Service
-
-Each service should contain its own `.env.local` file with its environment variables.
-
-#### `eshop.auth`
+##### `eshop.auth`
 
 ```
 PORT=3001
@@ -143,74 +146,3 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 DB_SSL=false
 JWT_SECRET=VERY_SECRET_AND_LONG_KEY
 ```
-
-#### `eshop.order`
-
-```
-DB_HOST=eshop.order.db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=VERY_SECURED_PASSWORD
-DB_NAME=eshop.orders
-QueueName=new_purchuse_queue
-ExchangeName=EShopExchange
-ConnectionString=amqp://guest:guest@eshop.broker:5672/
-DB_SSL=false
-```
-
-#### `eshop.order.server`
-
-```
-PORT=3002
-DB_HOST=eshop.order.db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=VERY_SECURED_PASSWORD
-DB_NAME=eshop.orders
-REDIS_HOST=eshop.redis
-REDIS_PORT=6379
-CORS_ORIGIN=http://localhost:85
-QueueName=new_purchuse_queue
-ExchangeName=EShopExchange
-ConnectionString=amqp://guest:guest@eshop.broker:5672/
-DB_SSL=false
-JWT_SECRET=VERY_SECRET_AND_LONG_KEY
-USER_SERVER_URL=http://eshop.user.server:3003/api
-```
-
-#### `eshop.server`
-
-```
-PORT=3000
-DB_HOST=eshop.db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=VERY_SECURED_PASSWORD
-DB_NAME=eshop
-REDIS_HOST=eshop.redis
-REDIS_PORT=6379
-CORS_ORIGIN=http://localhost
-QueueName=new_purchuse_queue
-ExchangeName=EShopExchange
-ConnectionString=amqp://guest:guest@eshop.broker:5672/
-DB_SSL=false
-JWT_SECRET=VERY_SECRET_AND_LONG_KEY
-```
-
-#### `eshop.user.server`
-
-```
-PORT=3003
-DB_HOST=eshop.db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=VERY_SECURED_PASSWORD
-DB_NAME=eshop
-REDIS_HOST=eshop.redis
-REDIS_PORT=6379
-CORS_ORIGINS=http://localhost,http://localhost:85
-DB_SSL=false
-JWT_SECRET=VERY_SECRET_AND_LONG_KEY
-```
-
-> ⚠️ Replace `VERY_SECURED_PASSWORD` and `VERY_SECRET_AND_LONG_KEY` with your own secure credentials.
