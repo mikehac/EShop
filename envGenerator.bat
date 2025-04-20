@@ -4,6 +4,12 @@ setlocal enabledelayedexpansion
 :: Save the starting directory
 set "startDir=%cd%"
 
+:: Create root .env file with Postgres volume paths
+echo Creating root .env file with Postgres volume paths
+echo POSTGRES_VOLUME_PATH_1=C:/POSTGRES_VOLUME_PATH_1 > .env
+echo POSTGRES_VOLUME_PATH_2=C:/POSTGRES_VOLUME_PATH_2 >> .env
+echo Root .env file created successfully
+
 :: Loop through all subfolders and find .env.example files
 for /r %%f in (*.env.example) do (
     echo Found: %%f
