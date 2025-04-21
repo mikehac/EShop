@@ -11,8 +11,9 @@ export class CartService {
       const existing = await this.getCart(shoppingCart.userId);
 
       let mergedItems = shoppingCart.items;
-
-      if (existing && existing.items) {
+      if (shoppingCart?.items?.length < existing?.items?.length) {
+        await this.redisService.del(shoppingCart.userId);
+      } else if (existing && existing.items) {
         // Create a map of productId to items from the existing cart
         const existingItemsMap = new Map(
           existing.items.map((item) => [item.productId, item]),
