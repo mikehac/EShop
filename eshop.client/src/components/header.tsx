@@ -15,6 +15,7 @@ export function Header({ showMenu }: { showMenu: boolean }) {
       res.json().then((data) => {
         if (data.success) {
           localStorage.removeItem("jwtToken");
+          localStorage.removeItem("totalItemsInCart");
           navigate("/");
         }
       });
