@@ -4,7 +4,7 @@ import { UserRegisterDto } from "../dtos/user.register.dto";
 import { User } from "../entities/user.enity";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
-import { JwtService } from "@mikehac/eshop-sharedauth";
+import { JwtService } from "@mike_hac/eshop-sharedauth";
 
 @Injectable()
 export class AuthService {

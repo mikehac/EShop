@@ -1,4 +1,4 @@
-import { JwtStrategy, PassportModule, SharedModule } from "@mikehac/eshop-sharedauth";
+import { JwtStrategy, PassportModule, SharedModule } from "@mike_hac/eshop-sharedauth";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DatabaseModule } from "src/database/database.module";

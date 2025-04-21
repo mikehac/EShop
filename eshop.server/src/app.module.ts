@@ -10,7 +10,7 @@ import { MqmanagerModule } from './mqmanager/mqmanager.module';
 import { ProductCategoryModule } from './product-category/product-category.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-import { SharedModule } from '@mikehac/eshop-sharedauth';
+import { SharedModule } from '@mike_hac/eshop-sharedauth';
 @Module({
   imports: [
     RedisModule,

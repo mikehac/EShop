@@ -6,7 +6,7 @@ import { OrderStatusHistory } from './entities/order-status-history.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Order } from './entities/order.entity';
 import { Address } from './entities/address.entity';
-import { SharedModule } from '@mikehac/eshop-sharedauth';
+import { SharedModule } from '@mike_hac/eshop-sharedauth';
 import { HttpModule } from '@nestjs/axios';
 import { RedisService } from 'redissolution';
 

@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Product } from '../entities/product.entity'; // adjust path as needed
-import { ProductCategory } from 'src/entities/productCategory.entity';
+import { ProductCategory } from '../entities/productCategory.entity';
 
 export const seedCategories = async (dataSource: DataSource) => {
   const CategoryRepository = dataSource.getRepository(ProductCategory);
