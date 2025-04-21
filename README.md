@@ -15,6 +15,7 @@
 
 - **Frontend**: React, TypeScript, SCSS
 - **Backend**: Node.js, Express (NestJS implied)
+- **Database**: PostgresSQL
 - **Authentication**: Custom auth service
 - **Containerization**: Docker, Docker Compose
 - **Personal NPM Packages**:
