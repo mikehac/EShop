@@ -23,7 +23,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_IMAGE_ORDER_NAME }}:latest .
+          docker build -t ${{ secrets.DOCKER_IMAGE_ORDER_NAME }}:latest ./eshop.order.server
           docker push ${{ secrets.DOCKER_IMAGE_ORDER_NAME }}:latest
 
       - name: Trigger redeploy on Render
