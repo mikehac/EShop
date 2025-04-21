@@ -17,6 +17,10 @@
 - **Backend**: Node.js, Express (NestJS implied)
 - **Authentication**: Custom auth service
 - **Containerization**: Docker, Docker Compose
+- **Personal NPM Packages**:
+  - [mqmanager-nestjs](https://www.npmjs.com/package/mqmanager-nestjs): For RabbitMQ integration
+  - [redissolution](https://www.npmjs.com/package/redissolution): For Redis in-memory database integration
+  - [@mike_hac/eshop-sharedauth](https://www.npmjs.com/package/@mike_hac/eshop-sharedauth): For sharing JWT strategy and JwtAuthGuard logic between services
 
 ## ⚙️ Getting Started
 
@@ -58,12 +62,3 @@ _Note: Port numbers are illustrative; please refer to `docker-compose.yml` for a
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-
-This script will:
-
-1. Check if the `eshop.db` folder exists, create it if needed
-2. Create database configuration files in the `eshop.db` folder
-3. Create a root `.env` file with Postgres volume paths
-4. Set up appropriate `.env` or `.env.local` files in each service directory
-
-> ⚠️ After running the script, you may want to review the generated files and replace default values like `VERY_SECURED_PASSWORD` and `VERY_SECRET_AND_LONG_KEY` with your own secure credentials.
