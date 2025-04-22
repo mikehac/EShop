@@ -5,7 +5,7 @@ import { currencyFormat } from "../utils/formatter";
 import { ProductCounter } from "./productCounter";
 import { useUserId } from "../hooks/useUserId";
 import { Address } from "../types/address";
-import { addItemsToCard } from "../utils/cart.service";
+import { addItemsToCart } from "../utils/cart.service";
 import { useApp } from "../hooks/useApp";
 import { ShoppingCart } from "../types/shopingCart";
 
@@ -77,7 +77,7 @@ export function CheckoutPage() {
           quantity: item.quantity,
         })),
       };
-      addItemsToCard(shoppingCart, appContext);
+      addItemsToCart(shoppingCart, appContext);
     }
   }, [cartDetails, shipping, gridInteracted]);
 
