@@ -10,6 +10,8 @@
 - **Order Management**: Handle order processing and tracking.
 - **Microservices Architecture**: Decoupled services for scalability.
 - **Dockerized Deployment**: Containerized services for easy deployment.
+- **Full CI/CD pipeline**: The CI/CD pipeline identifies changes and deploys only those services where changes occurred.
+  It includes building Docker images, publishing them to Docker Hub, and deploying to render.com hosting.
 
 ## 🛠️ Tech Stack
 
