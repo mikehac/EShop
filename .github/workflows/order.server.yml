@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build-deploy:
+  selective-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,11 +21,62 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Detect changed folders
+        id: changes
         run: |
-          docker build -t ${{ secrets.DOCKER_IMAGE_ORDER_NAME }}:latest ./eshop.order.server
-          docker push ${{ secrets.DOCKER_IMAGE_ORDER_NAME }}:latest
+          echo "CHANGED=$(git diff --name-only ${{ github.sha }}^1 | cut -d/ -f1 | sort -u | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
-      - name: Trigger redeploy on Render
+      - name: Build & push eshop.auth if changed
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.auth')
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/eshop.auth:latest ./eshop.auth
+          docker push ${{ secrets.DOCKER_USERNAME }}/eshop.auth:latest
+
+      - name: Redeploy eshop.auth on Render
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.auth')
+        run: |
+          curl -X POST ${{ secrets.AUTH_SERVER_RENDER_DEPLOY_HOOK_URL }}
+
+      - name: Build & push eshop.order if changed
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.order')
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/eshop.order:latest ./eshop.order
+          docker push ${{ secrets.DOCKER_USERNAME }}/eshop.order:latest
+
+      - name: Redeploy eshop.order on Render
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.order')
+        run: |
+          curl -X POST ${{ secrets.ORDER_RENDER_DEPLOY_HOOK_URL }}
+
+      - name: Build & push eshop.order.server if changed
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.order.server')
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/eshop.order.server:latest ./eshop.order.server
+          docker push ${{ secrets.DOCKER_USERNAME }}/eshop.order.server:latest
+
+      - name: Redeploy eshop.order.server on Render
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.order.server')
         run: |
           curl -X POST ${{ secrets.ORDER_SERVER_RENDER_DEPLOY_HOOK_URL }}
+
+      - name: Build & push eshop.server if changed
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.server')
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/eshop.server:latest ./eshop.server
+          docker push ${{ secrets.DOCKER_USERNAME }}/eshop.server:latest
+
+      - name: Redeploy eshop.server on Render
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.server')
+        run: |
+          curl -X POST ${{ secrets.SERVER_RENDER_DEPLOY_HOOK_URL }}
+
+      - name: Build & push eshop.user.server if changed
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.user.server')
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/eshop.user.server:latest ./eshop.user.server
+          docker push ${{ secrets.DOCKER_USERNAME }}/eshop.user.server:latest
+
+      - name: Redeploy eshop.user.server on Render
+        if: contains(steps.changes.outputs.CHANGED, 'eshop.user.server')
+        run: |
+          curl -X POST ${{ secrets.USER_SERVER_RENDER_DEPLOY_HOOK_URL }}
