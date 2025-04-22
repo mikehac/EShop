@@ -1,30 +1,29 @@
-import { Link, useNavigate } from "react-router-dom";
-import { httpPost, logout } from "../utils/service";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useApp } from "../hooks/useApp";
-export function Header({ showMenu }: { showMenu: boolean }) {
-  const [loggedIn, setLoggedIn] = useState<boolean>();
-  const { totalItemsInCart } = useApp();
-  useEffect(() => {
-    setLoggedIn(showMenu);
-  }, [loggedIn]);
+import { logout } from "../utils/service";
 
+export function Header() {
+  const { totalItemsInCart, isAuthenticated, setAuth } = useApp();
   const navigate = useNavigate();
+
   const handleLogoClick = () => {
     logout().then((res) => {
       res.json().then((data) => {
         if (data.success) {
           localStorage.removeItem("jwtToken");
           localStorage.removeItem("totalItemsInCart");
+          // Update authentication state to false
+          setAuth(false);
           navigate("/");
         }
       });
     });
   };
+
   return (
     <header className="header">
       <nav className="menuNav">
-        <ul className="nav-links" style={{ display: loggedIn ? "flex" : "none" }}>
+        <ul className="nav-links" style={{ display: isAuthenticated ? "flex" : "none" }}>
           <li>
             <a href="/">Home</a>
           </li>
@@ -33,8 +32,8 @@ export function Header({ showMenu }: { showMenu: boolean }) {
           </li>
           <li>
             <a href="/checkout">Cart</a>
-            <span className="cartCount" style={{ display: loggedIn ? "inline" : "none" }}>
-              {totalItemsInCart} {/* Replace this with the actual item count */}
+            <span className="cartCount" style={{ display: isAuthenticated ? "inline" : "none" }}>
+              {totalItemsInCart}
             </span>
           </li>
           <li>
@@ -42,11 +41,10 @@ export function Header({ showMenu }: { showMenu: boolean }) {
           </li>
         </ul>
       </nav>
-      {/* <img src={logo} alt="eShop Logo" className="logo" /> */}
-      {loggedIn && (
-        <Link className="logout-link" to="/home" onClick={handleLogoClick}>
+      {isAuthenticated && (
+        <a className="logout-link" href="#" onClick={handleLogoClick}>
           LogOut
-        </Link>
+        </a>
       )}
     </header>
   );

@@ -1,43 +1,50 @@
 import "./App.css";
-import "./styles/index.scss";
-import Login from "./components/login";
-import { Header } from "./components/header";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { ProductsPage } from "./components/productsPage";
-import { ProductDetailsPage } from "./components/productDetailsPage";
-import { useAuth } from "./hooks/useAuth";
-import { UserDetailsPage } from "./components/userDetailsPage";
+import { AppProvider, useApp } from "./AppContext";
 import { CheckoutPage } from "./components/checkoutPage";
-import { ShoppingCartPage } from "./components/shoppingCartPage";
+import { Header } from "./components/header";
+import Login from "./components/login";
+import { ProductDetailsPage } from "./components/productDetailsPage";
+import { ProductsPage } from "./components/productsPage";
 import { Register } from "./components/register";
-import { createContext } from "react";
-import { AppProvider } from "./AppContext";
+import { ShoppingCartPage } from "./components/shoppingCartPage";
+import { UserDetailsPage } from "./components/userDetailsPage";
+import "./styles/index.scss";
 
 function App() {
-  const { isAuthenticated, loading } = useAuth();
-  const itemsCartContext = createContext({ totalItemsInCart: 0 });
-
-  if (loading) return <div>Loading...</div>; // Prevents flickering
   return (
     <AppProvider>
-      <Header showMenu={isAuthenticated} />
+      <AppContent />
+    </AppProvider>
+  );
+}
+
+function AppContent() {
+  const { isAuthenticated, loading } = useApp();
+
+  if (loading) return <div>Loading...</div>; // Prevents flickering
+
+  return (
+    <>
+      <Header />
 
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/products/category/:id" element={<ProductsPage />} />
-        <Route path="/products/:id" element={<ProductDetailsPage />} />
+
         {/* Protected Routes */}
-        <Route path="/user" element={isAuthenticated ? <UserDetailsPage /> : <Navigate to="/login" />} />
-        <Route path="/checkout" element={isAuthenticated ? <CheckoutPage /> : <Navigate to="/login" />} />
-        <Route path="/cart" element={<ShoppingCartPage />} />
+        <Route path="/products" element={isAuthenticated ? <ProductsPage /> : <Navigate to="/" />} />
+        <Route path="/products/category/:id" element={isAuthenticated ? <ProductsPage /> : <Navigate to="/" />} />
+        <Route path="/products/:id" element={isAuthenticated ? <ProductDetailsPage /> : <Navigate to="/" />} />
+        <Route path="/user" element={isAuthenticated ? <UserDetailsPage /> : <Navigate to="/" />} />
+        <Route path="/checkout" element={isAuthenticated ? <CheckoutPage /> : <Navigate to="/" />} />
+        <Route path="/cart" element={isAuthenticated ? <ShoppingCartPage /> : <Navigate to="/" />} />
 
         {/* Default Redirect */}
-        <Route path="*" element={<Navigate to="/products" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </AppProvider>
+    </>
   );
 }
 

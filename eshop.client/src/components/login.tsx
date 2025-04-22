@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LoginFormInput } from "../types/loginFormInput";
 import { login } from "../utils/service";
+import { useApp } from "../hooks/useApp";
 
 export default function Login() {
   const {
@@ -11,14 +12,17 @@ export default function Login() {
     formState: { errors },
   } = useForm<LoginFormInput>();
 
+  const { setAuth } = useApp();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const onSubmit = async (data: LoginFormInput) => {
     try {
       const responseData = await login(data);
-      
 
       localStorage.setItem("jwtToken", responseData.token);
+
+      // Set authentication state to true after successful login
+      setAuth(true);
 
       navigate("/products"); // Redirect to main page after successful login
     } catch (error) {
