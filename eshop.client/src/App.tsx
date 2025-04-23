@@ -23,7 +23,7 @@ function App() {
 function AppContent() {
   const { isAuthenticated, loading } = useApp();
 
-  if (loading) return <div>Loading...</div>; // Prevents flickering
+  if (loading) return <div>Loading, Please wait, it could take few minutes because of render.com policy for free hosting</div>; // Prevents flickering
 
   return (
     <>

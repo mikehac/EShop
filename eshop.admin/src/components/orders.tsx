@@ -16,6 +16,7 @@ interface OrderItem {
 }
 export function Orders() {
   const [orders, setOrders] = useState<OrderItem[]>([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchOrders = async () => {
       const res = await httpGet("order");
@@ -23,6 +24,7 @@ export function Orders() {
         setOrders([]);
         return;
       }
+      setLoading(false);
       res.map((order: any) => {
         order.userName = order.user.username;
         order.address = `${order.address.street}, ${order.address.city}, ${order.address.zip}, ${order.address.country}`;
@@ -69,6 +71,8 @@ export function Orders() {
     { field: "createdAt", headerName: "Created at", valueFormatter: dateFormatter },
     { field: "updatedAt", headerName: "Updated at", valueFormatter: dateFormatter },
   ];
+  if (loading) return <div>Loading, Please wait, it could take few minutes because of render.com policy for free hosting</div>; // Prevents flickering
+
   return (
     <div>
       <h1>Orders</h1>
