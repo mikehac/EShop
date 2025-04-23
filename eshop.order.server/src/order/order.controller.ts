@@ -29,6 +29,11 @@ export class OrderController {
     return this.orderService.findAll();
   }
 
+  @Get('user/:userId')
+  async findByUserId(@Param('userId') userId: string) {
+    return await this.orderService.findByUserId(userId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
@@ -42,10 +47,5 @@ export class OrderController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.orderService.remove(id);
-  }
-
-  @Get('user/:userId')
-  async findByUserId(@Param('userId') userId: string) {
-    return await this.orderService.findByUserId(userId);
   }
 }
