@@ -9,10 +9,6 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.prod' });
 
-// SSL configuration based on environment
-const sslConfig =
-  process.env.DB_USE_SSL === 'true' ? { rejectUnauthorized: false } : false;
-
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'nas',
@@ -24,7 +20,15 @@ export const AppDataSource = new DataSource({
   migrations: ['src/migrations/*.ts'], // Ensures migration files are recognized
   synchronize: false, // Keep false in production
   logging: true,
-  ssl: sslConfig,
+  ssl: process.env.DB_SSL === 'true',
+  extra:
+    process.env.DB_SSL === 'true'
+      ? {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        }
+      : {},
 });
 
 if (require.main === module) {
