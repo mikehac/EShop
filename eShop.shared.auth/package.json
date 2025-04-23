@@ -12,7 +12,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@nestjs/common": "^11.0.17",
+    "@nestjs/common": "^11.1.0",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/passport": "^11.0.5",
     "passport": "^0.7.0",
