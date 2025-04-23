@@ -12,10 +12,12 @@ function getHeader() {
 
   return headers;
 }
-export function httpGet(endpoint: string, id: string = "", searchTerm: string = "") {
+export function httpGet(endpoint: string, id: string = "", searchTerm: string = "", fromOrder: boolean = false) {
+  // Construct the URL dynamically based on the parameters
+  const baseUrl = fromOrder ? process.env.ORDER_URL : process.env.BASE_SERVER_URL;
   const url = id ? `${endpoint}/${id}` : searchTerm ? `${endpoint}/?searchTerm=${searchTerm}` : endpoint;
   let headers = getHeader();
-  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+  return fetch(`${baseUrl}/${url}`, {
     method: "GET",
     credentials: "include",
     headers,

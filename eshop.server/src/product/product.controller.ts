@@ -21,4 +21,11 @@ export class ProductController {
   async getByCategoryId(@Param('id', ParseIntPipe) id: number) {
     return await this.productService.getByCategoryId(id);
   }
+
+  @Get('list/:ids')
+  async getByIds(@Param('ids') ids: string) {
+    return await this.productService.getByIds(
+      ids.split(',').map((id) => Number(id)),
+    );
+  }
 }

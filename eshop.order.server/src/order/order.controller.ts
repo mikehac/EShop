@@ -43,4 +43,9 @@ export class OrderController {
   remove(@Param('id') id: string) {
     return this.orderService.remove(id);
   }
+
+  @Get('user/:userId')
+  async findByUserId(@Param('userId') userId: string) {
+    return await this.orderService.findByUserId(userId);
+  }
 }

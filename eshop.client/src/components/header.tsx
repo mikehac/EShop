@@ -39,6 +39,9 @@ export function Header() {
           <li>
             <a href="/user">My details</a>
           </li>
+          <li>
+            <a href="/orders">My Orders</a>
+          </li>
         </ul>
       </nav>
       {isAuthenticated && (

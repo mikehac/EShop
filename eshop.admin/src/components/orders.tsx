@@ -41,19 +41,15 @@ export function Orders() {
   };
 
   const dateFormatter = (value: any) => {
-    return new Date(value).toLocaleDateString("en-GB", {
-      year: "numeric",
-      day: "numeric",
-      month: "numeric",
-    });
+    const date = new Date(value);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "Order Id",
-      width: 220,
-    },
+    { field: "id", headerName: "Order Id", width: 220 },
     {
       field: "userName",
       headerName: "Username",

@@ -9,6 +9,7 @@ import { Address } from './entities/address.entity';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { RedisService } from 'redissolution';
+import { SelectOrderDto } from './dto/select-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -149,6 +150,22 @@ export class OrderService {
       throw new Error(`Order with id ${id} not found`);
     } catch (error) {
       //TODO: Collect logs with winston or similar library
+      console.error('Error in OrderService.remove:', error.message);
+      throw error;
+    }
+  }
+
+  async findByUserId(userId: string): Promise<SelectOrderDto[]> {
+    try {
+      const order = await this.orderRepo.find({
+        where: { userId },
+        relations: ['items', 'address'],
+      });
+      if (!order) {
+        throw new Error(`Order with userId ${userId} not found`);
+      }
+      return order;
+    } catch (error) {
       console.error('Error in OrderService.remove:', error.message);
       throw error;
     }

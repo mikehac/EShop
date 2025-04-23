@@ -10,6 +10,7 @@ import { Register } from "./components/register";
 import { ShoppingCartPage } from "./components/shoppingCartPage";
 import { UserDetailsPage } from "./components/userDetailsPage";
 import "./styles/index.scss";
+import { OrdersPage } from "./components/ordersPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function AppContent() {
         <Route path="/user" element={isAuthenticated ? <UserDetailsPage /> : <Navigate to="/" />} />
         <Route path="/checkout" element={isAuthenticated ? <CheckoutPage /> : <Navigate to="/" />} />
         <Route path="/cart" element={isAuthenticated ? <ShoppingCartPage /> : <Navigate to="/" />} />
+        <Route path="/orders" element={isAuthenticated ? <OrdersPage /> : <Navigate to="/" />} />
 
         {/* Default Redirect */}
         <Route path="*" element={<Navigate to="/" />} />
