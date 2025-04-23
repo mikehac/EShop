@@ -25,10 +25,9 @@ jobs:
         id: changes
         run: |
           if [ $(git rev-list --count ${{ github.sha }}) -eq 1 ]; then
-            echo "First commit, running all builds"
-            echo "CHANGED=eshop.auth eshop.order eshop.order.server eshop.server eshop.user.server" >> $GITHUB_OUTPUT
+            echo "CHANGED=eshop.auth eshop.order eshop.order.server eshop.server eshop.user.server" >> "$GITHUB_OUTPUT"
           else
-            echo "CHANGED=$(git diff --name-only ${{ github.sha }}^1 ${{ github.sha }} | cut -d/ -f1 | sort -u | tr '\n' ' ')" >> $GITHUB_OUTPUT
+            echo "CHANGED=$(git diff --name-only ${{ github.sha }}^1 ${{ github.sha }} | cut -d/ -f1 | sort -u | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build & push eshop.auth if changed
