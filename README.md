@@ -17,8 +17,12 @@
 
 The application is hosted on [Render](https://render.com) with the following URLs:
 
-- **Client Site**: [https://eshop-iec7.onrender.com](https://eshop-iec7.onrender.com)-Username:test.user@eshop.com,password:test123
-- **Admin Dashboard**: [https://eshop-98jn.onrender.com](https://eshop-98jn.onrender.com)-Username:test@eshop.com,password:test123
+- **Client Site**: [https://eshop-iec7.onrender.com](https://eshop-iec7.onrender.com)
+  - Username: test.user@eshop.com
+  - Password: test123
+- **Admin Dashboard**: [https://eshop-98jn.onrender.com](https://eshop-98jn.onrender.com)
+  - Username: test@eshop.com
+  - Password: test123
 
 ## 🛠️ Tech Stack
 
