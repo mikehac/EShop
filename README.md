@@ -11,14 +11,22 @@
 - **Microservices Architecture**: Decoupled services for scalability.
 - **Dockerized Deployment**: Containerized services for easy deployment.
 - **Full CI/CD pipeline**: The CI/CD pipeline identifies changes and deploys only those services where changes occurred.
-  It includes building Docker images, publishing them to Docker Hub, and deploying to render.com hosting.
+  It includes building Docker images, publishing them to Docker Hub, and deploying to <a href="https://render.com/" target="_blank">render.com</a> hosting service.
+
+## 🌐 Hosting
+
+The application is hosted on [Render](https://render.com) with the following URLs:
+
+- **Client Site**: [https://eshop-iec7.onrender.com](https://eshop-iec7.onrender.com)-Username:test.user@eshop.com,password:test123
+- **Admin Dashboard**: [https://eshop-98jn.onrender.com](https://eshop-98jn.onrender.com)-Username:test@eshop.com,password:test123
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: React, TypeScript, SCSS
 - **Backend**: Node.js, Express (NestJS implied)
-- **Database**: PostgresSQL
+- **Database**: PostgresSQL, Redis
 - **Authentication**: Custom auth service
+- **Asynchronous communication between services**: RabbitMQ
 - **Containerization**: Docker, Docker Compose
 - **Personal NPM Packages**:
   - [mqmanager-nestjs](https://www.npmjs.com/package/mqmanager-nestjs): For RabbitMQ integration
