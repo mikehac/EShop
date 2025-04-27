@@ -48,9 +48,11 @@ export class AuthService {
       }
 
       const payload = { username: user.username, sub: user.id };
-
+      const token = this.jwtService.sign(payload);
+      user.lastLogin = new Date();
+      await this.repo.save(user);
       return {
-        token: this.jwtService.sign(payload),
+        token,
         user: {
           id: user.id,
           username: user.username,
