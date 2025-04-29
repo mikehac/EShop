@@ -25,7 +25,6 @@ export class OrderController {
 
   @Get()
   findAll() {
-    console.log('findAll called');
     return this.orderService.findAll();
   }
 

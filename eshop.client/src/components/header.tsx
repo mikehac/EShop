@@ -6,7 +6,7 @@ export function Header() {
   const { totalItemsInCart, isAuthenticated, setAuth } = useApp();
   const navigate = useNavigate();
 
-  const handleLogoClick = () => {
+  const handleLogOutClick = () => {
     logout().then((res) => {
       res.json().then((data) => {
         if (data.success) {
@@ -45,7 +45,7 @@ export function Header() {
         </ul>
       </nav>
       {isAuthenticated && (
-        <a className="logout-link" href="#" onClick={handleLogoClick}>
+        <a className="logout-link" href="#" onClick={handleLogOutClick}>
           LogOut
         </a>
       )}

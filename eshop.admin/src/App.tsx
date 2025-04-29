@@ -3,14 +3,26 @@ import "./styles/index.scss";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/login";
 import { Orders } from "./components/orders";
+import { AppProvider, useAppContext } from "./AppContext";
+import { Header } from "./components/header";
 
-function App() {
+export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/orders" element={<Orders />} />
-    </Routes>
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }
 
-export default App;
+function AppContent() {
+  const { isLoggedIn } = useAppContext();
+  return (
+    <>
+      {isLoggedIn && <Header />}
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/orders" element={<Orders />} />
+      </Routes>
+    </>
+  );
+}

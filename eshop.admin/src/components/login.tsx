@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LoginFormInput } from "../types/loginFormInput";
 import { login } from "../utils/service";
+import { useAppContext } from "../AppContext";
 
 export default function Login() {
   const {
@@ -10,9 +11,10 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInput>();
-
+  const { setLoggedIn } = useAppContext();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
+
   const onSubmit = async (data: LoginFormInput) => {
     try {
       const responseData = await login(data);
@@ -22,6 +24,7 @@ export default function Login() {
 
       localStorage.setItem("jwtToken", responseData.token);
       localStorage.setItem("userRole", responseData.user.role);
+      setLoggedIn(true);
       navigate("/orders");
     } catch (error) {
       if (error instanceof Error) {
