@@ -1,5 +1,11 @@
 //TODO: Check the posibility to export this functionality to project package, so it could be used in eshop.front and eshop.admin
 import { LoginFormInput } from "../types/loginFormInput";
+export interface orderFilter {
+  freeText?: string;
+  minTotal?: number;
+  maxTotal?: number;
+  status: string;
+}
 
 function getHeader() {
   let headers: Record<string, string> = {
@@ -12,16 +18,44 @@ function getHeader() {
 
   return headers;
 }
-export function httpGet(endpoint: string, id: string = "", searchTerm: string = "") {
-  const url = id ? `${endpoint}/${id}` : searchTerm ? `${endpoint}/?searchTerm=${searchTerm}` : endpoint;
+
+// Function overload signatures
+export function httpGet(endpoint: string, filter?: orderFilter): Promise<any>;
+export function httpGet(endpoint: string, id: string, searchTerm?: string): Promise<any>;
+
+// Implementation that handles all overload cases
+export function httpGet(endpoint: string, idOrFilter: string | orderFilter = "", searchTerm: string | undefined = "") {
   let headers = getHeader();
-  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+  if (typeof idOrFilter === "string") {
+    const url = idOrFilter ? `${endpoint}/${idOrFilter}` : searchTerm ? `${endpoint}/?searchTerm=${searchTerm}` : endpoint;
+    return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+      method: "GET",
+      credentials: "include",
+      headers,
+    }).then((resp) => resp.json());
+  }
+
+  let url = "?";
+  const filter = idOrFilter as orderFilter;
+  url = paramsBuilder(url, filter);
+
+  console.log(endpoint);
+  console.log(url);
+  return fetch(`${process.env.BASE_SERVER_URL}/${endpoint}/${url}`, {
     method: "GET",
     credentials: "include",
     headers,
   }).then((resp) => resp.json());
 }
-
+function paramsBuilder(url: string, filter: orderFilter): string {
+  for (let prop in filter) {
+    let prefix = url.length === 1 ? "" : "&";
+    if (prop in filter) {
+      url += `${prefix}${prop}=${filter[prop as keyof orderFilter]}`;
+    }
+  }
+  return url;
+}
 export function httpPost(endpoint: string, body: any = null) {
   const url = endpoint; // Construct the URL dynamically
   let headers = getHeader();

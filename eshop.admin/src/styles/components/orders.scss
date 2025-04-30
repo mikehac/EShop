@@ -1,0 +1,28 @@
+.filterContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+.searchTxt {
+  width: 100%;
+  height: 40px;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  padding: 0 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.filterCombo {
+  border-radius: 15px;
+  max-height: 40px;
+}
+
+.totalInput {
+  max-height: 30px;
+  margin: 0 10px;
+}

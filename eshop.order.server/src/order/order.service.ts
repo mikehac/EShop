@@ -10,6 +10,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { RedisService } from 'redissolution';
 import { SelectOrderDto } from './dto/select-order.dto';
+import { FilterOrderDto } from './dto/filter-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -20,6 +21,7 @@ export class OrderService {
     private readonly httpService: HttpService,
     private redisService: RedisService,
   ) {}
+
   create(createOrderDto: CreateOrderDto) {
     return 'This action adds a new order';
   }
@@ -167,6 +169,122 @@ export class OrderService {
       return order;
     } catch (error) {
       console.error('Error in OrderService.remove:', error.message);
+      throw error;
+    }
+  }
+
+  async findByFilter(filterDto: FilterOrderDto): Promise<SelectOrderDto[]> {
+    try {
+      // Start building the query
+      const queryBuilder = this.orderRepo
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.items', 'items')
+        .leftJoinAndSelect('order.address', 'address');
+
+      // Apply filters conditionally
+      if (filterDto.status) {
+        queryBuilder.andWhere('order.status = :status', {
+          status: filterDto.status,
+        });
+      }
+
+      if (filterDto.freeText) {
+        // Using LIKE operator with explicit cast for UUID
+        queryBuilder.andWhere(
+          'order.userId LIKE :searchTerm OR CAST(order.id AS TEXT) LIKE :searchTerm',
+          {
+            searchTerm: `%${filterDto.freeText}%`,
+          },
+        );
+      }
+      if (filterDto.userId) {
+        queryBuilder.andWhere('order.userId = :userId', {
+          userId: filterDto.userId,
+        });
+      }
+
+      if (filterDto.startDate) {
+        queryBuilder.andWhere('order.createdAt >= :startDate', {
+          startDate: filterDto.startDate,
+        });
+      }
+
+      if (filterDto.endDate) {
+        queryBuilder.andWhere('order.createdAt <= :endDate', {
+          endDate: filterDto.endDate,
+        });
+      }
+
+      if (filterDto.minTotal) {
+        queryBuilder.andWhere('order.total >= :minTotal', {
+          minTotal: filterDto.minTotal,
+        });
+      }
+
+      if (filterDto.maxTotal) {
+        queryBuilder.andWhere('order.total <= :maxTotal', {
+          maxTotal: filterDto.maxTotal,
+        });
+      }
+
+      // Execute the query
+      const orders = await queryBuilder.getMany();
+
+      // Get unique user IDs from filtered orders
+      const userIds = [...new Set(orders.map((order) => order.userId))];
+
+      // Use existing cache methods to get user data
+      let cachedUsers = await this.getFromCache(userIds);
+
+      // Find users that are not in cache yet
+      const missingUserIds = userIds.filter(
+        (id) => !cachedUsers.some((cachedUser) => cachedUser.userId === id),
+      );
+
+      // Fetch missing users if needed
+      if (missingUserIds.length > 0) {
+        try {
+          const usersObservable = await firstValueFrom(
+            this.httpService.get(
+              `${process.env.USER_SERVER_URL}/user/ids/${missingUserIds.join(',')}`,
+            ),
+          );
+          const usersFromDb = usersObservable.data;
+
+          // Set them to cache
+          await this.setToCache(usersFromDb);
+
+          // Refresh cached users list
+          cachedUsers = await this.getFromCache(userIds);
+        } catch (userError) {
+          console.error('Error fetching user data:', userError.message);
+          // Continue even if user data fetch fails
+        }
+      }
+
+      // Map orders with user data
+      return orders.map((order) => {
+        const user = cachedUsers.find((user) => user.userId === order.userId);
+        if (user) {
+          return {
+            ...order,
+            user: {
+              id: user.userId,
+              username: user.user.username,
+            },
+          };
+        }
+        return {
+          ...order,
+          user: {
+            id: order.userId,
+            username: 'not found',
+          },
+        };
+      });
+    } catch (error) {
+      console.error('Error in OrderService.findByFilter:', error.message);
+      console.error('Stack trace:', error.stack);
       throw error;
     }
   }

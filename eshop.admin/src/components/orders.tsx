@@ -1,6 +1,7 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import { httpGet } from "../utils/service";
+import { useEffect, useRef, useState } from "react";
+import { MenuItem, Select, TextField } from "@mui/material";
+import { httpGet, orderFilter } from "../utils/service";
 
 interface OrderItem {
   userId: string;
@@ -14,9 +15,15 @@ interface OrderItem {
   createdAt: Date;
   updatedAt: Date;
 }
+
 export function Orders() {
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const statusValue = useRef("All"); // Initialize with "All"
+  const freeText = useRef<HTMLInputElement | null>(null);
+  const minTotal = useRef<HTMLInputElement | null>(null);
+  const maxTotal = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     const fetchOrders = async () => {
       const res = await httpGet("order");
@@ -25,16 +32,54 @@ export function Orders() {
         return;
       }
       setLoading(false);
-      res.map((order: any) => {
-        order.userName = order.user.username;
-        order.address = `${order.address.street}, ${order.address.city}, ${order.address.zip}, ${order.address.country}`;
-        order.totalItems = order.items.length;
-      });
-      setOrders(res);
+      const ordersAndUser = getUserAndAddress(res);
+      setOrders(ordersAndUser);
     };
 
     fetchOrders();
   }, []);
+
+  const handleTextChange = () => {
+    handleFiltering();
+  };
+
+  const handleStatusChange = (event: any) => {
+    statusValue.current = event.target.value;
+    handleFiltering();
+  };
+
+  const handleFiltering = () => {
+    const filterDataToSend: orderFilter = {
+      status: statusValue.current !== "All" ? statusValue.current : "",
+    };
+
+    if (freeText.current?.value && freeText.current.value !== "") {
+      filterDataToSend.freeText = freeText.current.value;
+    }
+
+    if (minTotal.current?.value && minTotal.current.value !== "") {
+      filterDataToSend.minTotal = Number(minTotal.current.value);
+    }
+
+    if (maxTotal.current?.value && maxTotal.current.value !== "") {
+      filterDataToSend.maxTotal = Number(maxTotal.current.value);
+    }
+
+    console.log(filterDataToSend);
+    httpGet("order/search", filterDataToSend).then((res) => {
+      const ordersAndUser = getUserAndAddress(res);
+      setOrders(ordersAndUser);
+    });
+  };
+
+  const getUserAndAddress = (res: any[]) => {
+    res.map((order: any) => {
+      order.userName = order.user.username;
+      order.address = `${order.address.street}, ${order.address.city}, ${order.address.zip}, ${order.address.country}`;
+      order.totalItems = order.items.length;
+    });
+    return res;
+  };
   const dateTimeFormater = (value: any) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -76,6 +121,18 @@ export function Orders() {
   return (
     <div>
       <h1>Orders</h1>
+      <header>
+        <section className="filterContainer">
+          <TextField className="searchTxt" placeholder="Search..." inputRef={freeText} size="small" onChange={handleTextChange} />
+          <TextField type="number" className="totalInput" placeholder="Min Total" inputRef={minTotal} size="small" onChange={handleTextChange} />
+          <TextField type="number" className="totalInput" placeholder="Max Total" inputRef={maxTotal} size="small" onChange={handleTextChange} />
+          <Select className="filterCombo" value={statusValue.current} onChange={handleStatusChange} size="small">
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Pending">Pending</MenuItem>
+            <MenuItem value="Shipped">Shipped</MenuItem>
+          </Select>
+        </section>
+      </header>
       <DataGrid rows={orders} columns={columns} />
     </div>
   );
