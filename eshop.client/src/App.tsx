@@ -1,6 +1,6 @@
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { AppProvider, useApp } from "./AppContext";
+import { AppProvider } from "./AppContext";
 import { CheckoutPage } from "./components/checkoutPage";
 import { Header } from "./components/header";
 import Login from "./components/login";
@@ -11,6 +11,7 @@ import { ShoppingCartPage } from "./components/shoppingCartPage";
 import { UserDetailsPage } from "./components/userDetailsPage";
 import "./styles/index.scss";
 import { OrdersPage } from "./components/ordersPage";
+import { useApp } from "./hooks/useApp";
 
 function App() {
   return (
