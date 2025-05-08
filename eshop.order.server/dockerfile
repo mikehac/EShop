@@ -23,5 +23,5 @@ EXPOSE 3002
 # Set the environment variable for production
 ENV NODE_ENV=production
 
-# Command to run the application
-CMD ["npm", "start:prod"]
+# Command to run the application with the corrected syntax
+CMD ["npm", "run", "start:prod"]
