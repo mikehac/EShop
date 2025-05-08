@@ -21,10 +21,14 @@ export function Register() {
   function handleRegister(event: React.FormEvent) {
     event.preventDefault();
     // Handle registration logic here
-    httpPost("auth/register", {
-      username: username.current?.value,
-      password: password.current?.value,
-    })
+    httpPost(
+      "auth/register",
+      {
+        username: username.current?.value,
+        password: password.current?.value,
+      },
+      false
+    )
       .then((response) => {
         setSuccessMessage(true); // Show success message
         setTimeout(() => {

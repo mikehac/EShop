@@ -24,10 +24,10 @@ export function httpGet(endpoint: string, id: string = "", searchTerm: string = 
   }).then((resp) => resp.json());
 }
 
-export function httpPost(endpoint: string, body: any = null) {
-  const url = endpoint; // Construct the URL dynamically
+export function httpPost(endpoint: string, body: any = null, useBaseUrl: boolean = true) {
+  const baseUrl = useBaseUrl ? process.env.BASE_SERVER_URL : process.env.BASE_LOGIN_URL;
   let headers = getHeader();
-  return fetch(`${process.env.BASE_SERVER_URL}/${url}`, {
+  return fetch(`${baseUrl}/${endpoint}`, {
     method: "POST",
     credentials: "include",
     body: body ? JSON.stringify(body) : undefined,
