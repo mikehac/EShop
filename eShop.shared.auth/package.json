@@ -1,6 +1,6 @@
 {
   "name": "@mike_hac/eshop-sharedauth",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This package is used for sharing jwtStrategy and jwtAuthGUard between server side projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.17",
     "@types/passport-jwt": "^4.0.1"
   }
 }

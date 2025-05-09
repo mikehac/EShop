@@ -25,7 +25,7 @@
     "migration:run": "npm run typeorm -- migration:run -d src/data-source.ts"
   },
   "dependencies": {
-    "@mike_hac/eshop-sharedauth": "^1.0.2",
+    "@mike_hac/eshop-sharedauth": "^1.0.3",
     "@nestjs/common": "^11.1.0",
     "@nestjs/core": "^11.1.0",
     "@nestjs/jwt": "^11.0.0",
