@@ -1,1 +1,12 @@
 GET http://localhost:3000/api/product/list/1,15
+
+###
+POST http://localhost:3000/api/product-rating
+Content-Type: application/json
+
+{
+  "userId": "a75373c6-7b28-4db3-8298-e04d6cf04740",
+  "ratingId": 1,
+  "productId": 1,
+  "ratingDescription": "Excellent product!"
+}

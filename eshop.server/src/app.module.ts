@@ -11,6 +11,7 @@ import { ProductCategoryModule } from './product-category/product-category.modul
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { SharedModule } from '@mike_hac/eshop-sharedauth';
+import { ProductRatingModule } from './product-rating/product-rating.module';
 @Module({
   imports: [
     RedisModule,
@@ -22,6 +23,7 @@ import { SharedModule } from '@mike_hac/eshop-sharedauth';
     CartModule,
     MqmanagerModule,
     UserModule,
+    ProductRatingModule,
   ],
   controllers: [AppController],
   providers: [AppService, RedisService],

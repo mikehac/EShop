@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
+import { ProductRating } from './productRating.entity';
 
 @Entity('users')
 export class User {
@@ -29,4 +31,7 @@ export class User {
 
   @OneToOne(() => Address, (address) => address.user)
   address: Address;
+
+  @ManyToMany(() => ProductRating, (productRating) => productRating.users)
+  productRating?: ProductRating[];
 }
