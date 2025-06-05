@@ -6,6 +6,9 @@ import { Product } from './entities/product.entity';
 import { Address } from './entities/address.entity';
 import { User } from './entities/user.enity';
 import * as dotenv from 'dotenv';
+import { Rating } from './entities/rating.entity';
+import { ProductRating } from './entities/productRating.entity';
+import { seedRating } from './seed/rating.seed';
 
 dotenv.config({ path: '.env.prod' });
 
@@ -16,9 +19,9 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'jacui4Nhftk',
   database: process.env.DB_NAME || 'eshop',
-  entities: [User, Address, ProductCategory, Product],
+  entities: [User, Address, ProductCategory, Product, Rating, ProductRating],
   migrations: ['src/migrations/*.ts'], // Ensures migration files are recognized
-  synchronize: false, // Keep false in production
+  synchronize: true, // Keep false in production
   logging: true,
   ssl: process.env.DB_SSL === 'true',
   extra:
@@ -34,7 +37,8 @@ export const AppDataSource = new DataSource({
 if (require.main === module) {
   AppDataSource.initialize()
     .then(async (dataSource: DataSource) => {
-      await seedProducts(dataSource);
+      // await seedProducts(dataSource);
+      await seedRating(dataSource);
       console.log('Data Source initialized');
     })
     .catch((err) =>
