@@ -8,6 +8,7 @@ import { addItemsToCart } from "../utils/cart.service";
 import { currencyFormat } from "../utils/formatter";
 import { httpGet } from "../utils/service";
 import { ProductCounter } from "./productCounter";
+import { ProductRating } from "./productRating";
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>(); // Extract the 'id' parameter from the URL
@@ -67,46 +68,56 @@ export function ProductDetailsPage() {
   return (
     <>
       {product && (
-        <section className="productSection">
-          <div>
-            <img style={{ width: "300px" }} src={product.imageUrl} alt={product.name} />
-          </div>
-          <div className="productDataContainer">
-            <div className="priceContainer">{currencyFormat(product.price)}</div>
-            <div className="productDescription">{product.description}</div>
-          </div>
-          <div className="buySection">
-            <div className="info">
-              <label>Sold by:</label>
-              <div>Fake Seller</div>
-            </div>
-            <div className="info">
-              <label>Ship to:</label>
-              <div>Fake Address</div>
-            </div>
-            <div className="info">
-              <label>Quantity:</label>
-              <div>
-                <ProductCounter onQuantityChange={handleQuantityChange} value={1} />
+        <div>
+          <main className="productSection">
+            <section>
+              <div className="productInfo">
+                <div>
+                  <img style={{ width: "300px" }} src={product.imageUrl} alt={product.name} />
+                </div>
+                <div className="productDataContainer">
+                  <div className="priceContainer">{currencyFormat(product.price)}</div>
+                  <div className="productDescription">{product.description}</div>
+                </div>
+              </div>
+              <hr />
+              <section>
+                <ProductRating />
+              </section>
+            </section>
+            <div className="buySection">
+              <div className="info">
+                <label>Sold by:</label>
+                <div>Fake Seller</div>
+              </div>
+              <div className="info">
+                <label>Ship to:</label>
+                <div>Fake Address</div>
+              </div>
+              <div className="info">
+                <label>Quantity:</label>
+                <div>
+                  <ProductCounter onQuantityChange={handleQuantityChange} value={1} />
+                </div>
+              </div>
+
+              <button className="buyBtn" onClick={buyClickHandler}>
+                Buy
+              </button>
+              <button className="addToCartBtn" onClick={addToCart}>
+                Add to cart
+              </button>
+              <div
+                className="cartNotification"
+                style={{
+                  opacity: showNotification ? 1 : 0,
+                }}
+              >
+                ✓ The product was added to shopping cart
               </div>
             </div>
-
-            <button className="buyBtn" onClick={buyClickHandler}>
-              Buy
-            </button>
-            <button className="addToCartBtn" onClick={addToCart}>
-              Add to cart
-            </button>
-            <div
-              className="cartNotification"
-              style={{
-                opacity: showNotification ? 1 : 0,
-              }}
-            >
-              ✓ The product was added to shopping cart
-            </div>
-          </div>
-        </section>
+          </main>
+        </div>
       )}
     </>
   );

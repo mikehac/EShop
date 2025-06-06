@@ -73,6 +73,7 @@ export class ProductRatingService {
         result.productId = Number(pr.productId);
         result.ratingId = pr.ratingId;
         result.ratingName = pr.rating?.name;
+        result.ratingValue = pr.rating?.value;
         result.ratingDescription = pr.ratingDescription;
         result.userName = pr.user?.username;
         return result;

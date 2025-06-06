@@ -1,0 +1,19 @@
+.rate-header {
+  display: flex;
+}
+
+.userImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.user-response {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-bottom: 20px;
+  span {
+    text-align: start;
+  }
+}
