@@ -67,7 +67,7 @@ export class ProductRatingService {
         },
         where: { productId: productId },
       });
-      console.log('Fetched product ratings:', productRatings);
+
       const ratingsResult = productRatings.map((pr) => {
         const result = new RatingResponseDto();
         result.productId = Number(pr.productId);
@@ -77,6 +77,7 @@ export class ProductRatingService {
         result.userName = pr.user?.username;
         return result;
       });
+
       return ratingsResult;
     } catch (error) {
       console.error('Error fetching product ratings:', error.message);
