@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewRatingDto } from 'src/dtos/new.rating.dto';
+import { RatingResponseDto } from 'src/dtos/rating.response.dto';
 import { Product } from 'src/entities/product.entity';
 import { ProductRating } from 'src/entities/productRating.entity';
 import { User } from 'src/entities/user.enity';
@@ -48,5 +49,39 @@ export class ProductRatingService {
         }
       },
     );
+  }
+  async getRatingByProduct(productId: number): Promise<RatingResponseDto[]> {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+    });
+    if (!product) {
+      return null;
+    }
+    try {
+      console.log('Repository initialized:', this.prodRatingRepo);
+      // Use eager loading with proper relation configuration
+      const productRatings = await this.prodRatingRepo.find({
+        relations: {
+          rating: true,
+          user: true,
+        },
+        where: { productId: productId },
+      });
+      console.log('Fetched product ratings:', productRatings);
+      const ratingsResult = productRatings.map((pr) => {
+        const result = new RatingResponseDto();
+        result.productId = Number(pr.productId);
+        result.ratingId = pr.ratingId;
+        result.ratingName = pr.rating?.name;
+        result.ratingDescription = pr.ratingDescription;
+        result.userName = pr.user?.username;
+        return result;
+      });
+      return ratingsResult;
+    } catch (error) {
+      console.error('Error fetching product ratings:', error.message);
+      console.error('Repository state:', this.prodRatingRepo);
+      throw error; // Rethrow error for further debugging
+    }
   }
 }

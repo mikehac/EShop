@@ -1,8 +1,10 @@
 import {
   Column,
   Entity,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Rating } from './rating.entity';
@@ -19,7 +21,7 @@ export class ProductRating {
   @Column()
   ratingId: number;
 
-  @Column()
+  @Column('uuid')
   userId: string;
 
   @Column()
@@ -27,10 +29,10 @@ export class ProductRating {
 
   @Column()
   createdAt: Date;
-
-  @OneToOne(() => Rating, (rating) => rating.id)
+  @ManyToOne(() => Rating)
+  @JoinColumn({ name: 'ratingId' })
   rating: Rating;
-
-  @ManyToMany(() => User, (user) => user.productRating)
-  users?: User[];
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId' })
+  user: User;
 }

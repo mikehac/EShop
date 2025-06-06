@@ -32,6 +32,6 @@ export class User {
   @OneToOne(() => Address, (address) => address.user)
   address: Address;
 
-  @ManyToMany(() => ProductRating, (productRating) => productRating.users)
+  @ManyToMany(() => ProductRating, (productRating) => productRating.user)
   productRating?: ProductRating[];
 }
