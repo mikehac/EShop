@@ -1,5 +1,6 @@
 .rate-header {
   display: flex;
+  border-bottom: 1px solid;
 }
 
 .userImg {
@@ -16,4 +17,8 @@
   span {
     text-align: start;
   }
+}
+.rating-date {
+  margin-top: 20px;
+  color: #cdcdcd;
 }

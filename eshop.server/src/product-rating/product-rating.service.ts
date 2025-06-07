@@ -76,6 +76,7 @@ export class ProductRatingService {
         result.ratingValue = pr.rating?.value;
         result.ratingDescription = pr.ratingDescription;
         result.userName = pr.user?.username;
+        result.createdAt = pr.createdAt;
         return result;
       });
 

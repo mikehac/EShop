@@ -5,4 +5,5 @@ export interface Rating {
   ratingValue: number;
   ratingName: string;
   userName: string;
+  createdAt: Date;
 }

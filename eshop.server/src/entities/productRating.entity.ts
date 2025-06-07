@@ -29,9 +29,11 @@ export class ProductRating {
 
   @Column()
   createdAt: Date;
+
   @ManyToOne(() => Rating)
   @JoinColumn({ name: 'ratingId' })
   rating: Rating;
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })
   user: User;

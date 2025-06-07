@@ -6,10 +6,9 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { ProductRatingService } from './product-rating.service';
-import { NewRatingDto } from 'src/dtos/new.rating.dto';
 import { NotFoundError } from 'rxjs';
-import { ok } from 'node:assert';
+import { NewRatingDto } from 'src/dtos/new.rating.dto';
+import { ProductRatingService } from './product-rating.service';
 
 @Controller('api/product-rating')
 export class ProductRatingController {

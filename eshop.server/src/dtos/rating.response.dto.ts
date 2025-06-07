@@ -5,4 +5,5 @@ export class RatingResponseDto {
   ratingId: number;
   ratingDescription: string;
   productId: number;
+  createdAt: Date;
 }
