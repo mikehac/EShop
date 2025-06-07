@@ -82,6 +82,7 @@ export function ProductDetailsPage() {
               </div>
               <hr />
               <section>
+                <header className="customerReview-title">Customer Reviews</header>
                 <ProductRating />
               </section>
             </section>

@@ -13,5 +13,7 @@ export function ProductRating() {
       setRattings(res);
     });
   }, []);
+
+  if (ratings.length == 0) return <div>No ratings was given yet</div>;
   return ratings.length > 0 && ratings.map((rating) => <ProductSingleRating {...rating} />);
 }
