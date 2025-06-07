@@ -21,6 +21,7 @@ export class ProductRatingController {
     }
     try {
       await this.productRatingService.setNewRating(newRating);
+      return { success: true };
     } catch (err) {
       console.error(err);
     }

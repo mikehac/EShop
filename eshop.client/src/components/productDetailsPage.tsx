@@ -9,6 +9,7 @@ import { currencyFormat } from "../utils/formatter";
 import { httpGet } from "../utils/service";
 import { ProductCounter } from "./productCounter";
 import { ProductRating } from "./productRating";
+import { ReviewModal } from "./review/reviewModal";
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>(); // Extract the 'id' parameter from the URL
@@ -20,6 +21,7 @@ export function ProductDetailsPage() {
   const [product, setProduct] = useState<Product>();
   const [quantity, setQuantity] = useState<number>(1);
   const [showNotification, setShowNotification] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     httpGet("product", id).then((res) => {
@@ -82,8 +84,12 @@ export function ProductDetailsPage() {
               </div>
               <hr />
               <section>
-                <header className="customerReview-title">Customer Reviews</header>
+                <header className="customerReview-title">
+                  <label>Customer Reviews</label>
+                  <button onClick={() => setShowModal(true)}>Give review</button>
+                </header>
                 <ProductRating />
+                <ReviewModal showModal={showModal} setShowModal={setShowModal} />
               </section>
             </section>
             <div className="buySection">

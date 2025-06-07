@@ -21,8 +21,8 @@
 }
 .productInfo {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  gap: 20px;
 }
 
 .productDataContainer {
@@ -87,8 +87,17 @@
 }
 
 .customerReview-title {
-  font-weight: 600;
-  font-size: 20px;
-  text-align: start;
+  display: flex;
+  justify-content: space-between;
   margin: auto 20px;
+
+  label {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: start;
+  }
+  button {
+    color: white;
+    background-color: #017bfb;
+  }
 }
